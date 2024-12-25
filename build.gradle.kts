@@ -17,7 +17,15 @@ java {
 }
 
 dependencies {
-  paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
+  //paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+  paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.21.4-R0.1-20241215.095037-18")
+  compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+}
+
+repositories {
+  maven {
+    url = uri("https://repo.dmulloy2.net/repository/public/")
+  }
 }
 
 tasks {
@@ -36,7 +44,10 @@ bukkitPluginYaml {
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   authors.add("Jufyer")
   apiVersion = "1.21.4"
+  depend = listOf("ProtocolLib")
   commands {
-
+    register("spawnOceanGlider")
+    register("giveOceanGlider")
+    register("spawnWhale")
   }
 }
