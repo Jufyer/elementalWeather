@@ -1,44 +1,39 @@
 package org.jufyer.plugin.aquatic.oceanGlider.entity.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jufyer.plugin.aquatic.Main;
-import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OceanGliderListeners implements Listener {
-  private final Main plugin;
-
-  public OceanGliderListeners(Main plugin) {
-    this.plugin = plugin;
-  }
+  private List<Player> ridingPlayers = new ArrayList<>();
+  private Map<Player, ArmorStand> playerArmorStandMap = new HashMap<>();
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-    // Überprüfen, ob der Spieler auf einen ArmorStand klickt
     if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND)) {
       ArmorStand as = (ArmorStand) event.getRightClicked();
-      // Überprüfen, ob der ArmorStand eine Nautilus Shell als Helm trägt
       if (as.getEquipment().getHelmet() != null && as.getEquipment().getHelmet().getType() == Material.NAUTILUS_SHELL) {
-        // Überprüfen, ob der Helm ein benutzerdefiniertes Modell-Datenattribut hat
         if (as.getEquipment().getHelmet().hasItemMeta() &&
           as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() &&
           as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDOceanGliderEntity) {
-          Boat
-          // Den Spieler und den ArmorStand miteinander verbinden (Ritteffekt wie bei einem Pferd)
-          Player player = event.getPlayer();
-          player.setPassenger(as); // Der Spieler wird zum Passagier des ArmorStands
-          as.setGravity(false); // ArmorStand soll keine Schwerkraft mehr haben
-          as.setBasePlate(false); // ArmorStand ohne Basisplatte anzeigen
-          as.setArms(true); // Arme des ArmorStands aktivieren
-          as.setVisible(false); // ArmorStand unsichtbar machen (optional)
+          as.teleport(new Location(as.getWorld(), as.getX(), as.getY() - 2, as.getZ(), as.getYaw(), as.getPitch()));
+
+          ridingPlayers.add(event.getPlayer());
+          playerArmorStandMap.put(event.getPlayer(), as);
+
+          event.setCancelled(true);
         }
       }
     }
@@ -47,21 +42,33 @@ public class OceanGliderListeners implements Listener {
   @EventHandler
   public void onPlayerMove(PlayerMoveEvent event) {
     Player player = event.getPlayer();
+    if (ridingPlayers.contains(player)) {
+      ArmorStand armorStand = playerArmorStandMap.get(player);
+      if (armorStand != null) {
+        Location playerLocation = player.getLocation();
 
-    // Überprüfen, ob der Spieler auf einem ArmorStand sitzt
-    if (player.getPassenger() instanceof ArmorStand) {
-      ArmorStand as = (ArmorStand) player.getPassenger();
+        // Verhindere vertikale Bewegung (wenn der Spieler nach oben oder unten schaut)
+        double pitch = playerLocation.getPitch();
+        if (pitch > -45 && pitch < 45) {
+          // Bewegung in Blickrichtung des Spielers berechnen
+          float yaw = playerLocation.getYaw();
+          double radians = Math.toRadians(yaw);
 
-      // Wir synchronisieren die Position des ArmorStands mit der Bewegung des Spielers
-      Vector velocity = player.getVelocity();
+          double x = Math.sin(radians) * 0.5; // Bewegungsgeschwindigkeit
+          double z = Math.cos(radians) * -0.5; // Bewegungsgeschwindigkeit
 
-      // Setze die Geschwindigkeit des ArmorStands auf die des Spielers (angepasst)
-      as.setVelocity(velocity.multiply(0.5)); // Passe den Multiplikator für Geschwindigkeit an
+          // Neue Position setzen
+          Location newLocation = armorStand.getLocation().add(x, 0, z);
+          armorStand.teleport(newLocation);
 
-      // Drehe den ArmorStand entsprechend der Blickrichtung des Spielers
-      as.setRotation(player.getLocation().getYaw(), player.getLocation().getPitch());
+          // Spieler mit dem ArmorStand synchronisieren
+          Location playerNewLocation = newLocation.clone().add(0, 2, 0);
+          player.teleport(playerNewLocation);
+        }
+      }
 
-      // Optional: weitere Anpassungen der Position oder Bewegung des ArmorStands
+      // Verhindere, dass der Spieler sich unabhängig bewegt
+      event.setCancelled(true);
     }
   }
 }

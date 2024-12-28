@@ -15,6 +15,9 @@ public class OceanGlider {
     armorStand.setPersistent(true);
     armorStand.setCanMove(false);
     armorStand.setVisible(false);
+    armorStand.setGravity(false);
+    armorStand.setBasePlate(false);
+    armorStand.setArms(false);
 
     ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
     ItemMeta meta = oceanGlider.getItemMeta();
@@ -23,6 +26,5 @@ public class OceanGlider {
     oceanGlider.setItemMeta(meta);
 
     armorStand.setHelmet(oceanGlider);
-
   }
 }
