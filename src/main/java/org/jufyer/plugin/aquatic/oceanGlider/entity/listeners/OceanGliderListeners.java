@@ -214,7 +214,7 @@ public class OceanGliderListeners implements Listener {
     armorStand.setPersistent(true);
     armorStand.setCanMove(false);
 
-    armorStand.setVisible(true);
+    armorStand.setVisible(false);
 
     armorStand.setGravity(false);
     armorStand.setBasePlate(false);
