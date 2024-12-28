@@ -5,11 +5,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -29,6 +30,7 @@ public class OceanGliderListeners implements Listener {
   private Map<Player, ArmorStand> playerArmorStandMap = new HashMap<>();
   private Map<ArmorStand, Location> LocationBeforeArmorStandMap = new HashMap<>();
   private List<Player> areAllowedToFly = new ArrayList<>();
+  private Map<ArmorStand, Double> DistanceFromArmorStand = new HashMap<>();
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
@@ -69,6 +71,36 @@ public class OceanGliderListeners implements Listener {
           playerArmorStandMap.put(event.getPlayer(), as);
 
           event.setCancelled(true);
+        }
+      }
+    }
+  }
+
+  @EventHandler
+  public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+    if (event.getDamager() instanceof Player){
+      Player player = (Player) event.getDamager();
+      Entity entity = event.getEntity();
+      if (entity instanceof ArmorStand){
+        ArmorStand as = (ArmorStand) event.getEntity();
+        if (as.getEquipment().getItemInHand() != null && as.getEquipment().getItemInHand().getType() == Material.NAUTILUS_SHELL ||
+          as.getEquipment().getHelmet() != null && as.getEquipment().getHelmet().getType() == Material.NAUTILUS_SHELL) {
+          if (as.getEquipment().getItemInHand().hasItemMeta() &&
+            as.getEquipment().getItemInHand().getItemMeta().hasCustomModelData() &&
+            as.getEquipment().getItemInHand().getItemMeta().getCustomModelData() == Main.CMDOceanGliderEntity ||
+            as.getEquipment().getHelmet().hasItemMeta() &&
+            as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() &&
+            as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDOceanGliderEntity) {
+
+            ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+            ItemMeta meta = oceanGlider.getItemMeta();
+            meta.setCustomModelData(Main.CMDOceanGlider);
+            meta.setDisplayName("§rOcean Glider");
+            oceanGlider.setItemMeta(meta);
+            player.getWorld().dropItemNaturally(as.getLocation(), oceanGlider);
+
+            as.remove();
+          }
         }
       }
     }
@@ -120,6 +152,33 @@ public class OceanGliderListeners implements Listener {
         Location newLocation = new Location(event.getTo().getWorld(), event.getTo().getX(), fromY, event.getTo().getZ());
         player.teleport(newLocation);
       }
+
+      double distance = event.getFrom().distance(event.getTo());
+      double currentDistance = DistanceFromArmorStand.get(as);
+
+      if (currentDistance >= 300) {
+        as.remove();
+        if (ridingPlayers.contains(player) && playerArmorStandMap.containsKey(player)) {
+
+          if (!(player.isOp())){
+            player.setAllowFlight(false);
+          }
+          player.setFlying(false);
+          player.setFlySpeed(0.1f);
+          player.setGravity(true);
+
+          player.removePassenger(as);
+
+          ridingPlayers.remove(event.getPlayer());
+          playerArmorStandMap.remove(event.getPlayer(), as);
+        }
+        return;
+      }
+
+      distance += currentDistance;
+
+      DistanceFromArmorStand.remove(as);
+      DistanceFromArmorStand.put(as, distance);
     }
   }
 
@@ -191,6 +250,7 @@ public class OceanGliderListeners implements Listener {
 
                 if (loc.getBlock().isLiquid()){
                   spawnOceanGlider(loc, player.getYaw(), player.getPitch());
+
                   lastPlacedBlockTimes.put(player, currentTime);
                 }
                 if (player.getGameMode() != GameMode.CREATIVE) {
@@ -228,5 +288,6 @@ public class OceanGliderListeners implements Listener {
     oceanGlider.setItemMeta(meta);
 
     armorStand.setItemInHand(oceanGlider);
+    DistanceFromArmorStand.put(armorStand, 0.0);
   }
 }
