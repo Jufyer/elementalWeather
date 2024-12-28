@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -26,21 +27,36 @@ import java.util.Map;
 public class OceanGliderListeners implements Listener {
   private List<Player> ridingPlayers = new ArrayList<>();
   private Map<Player, ArmorStand> playerArmorStandMap = new HashMap<>();
+  private Map<ArmorStand, Location> LocationBeforeArmorStandMap = new HashMap<>();
   private List<Player> areAllowedToFly = new ArrayList<>();
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
     if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND)) {
       ArmorStand as = (ArmorStand) event.getRightClicked();
-      if (as.getEquipment().getHelmet() != null && as.getEquipment().getHelmet().getType() == Material.NAUTILUS_SHELL) {
-        if (as.getEquipment().getHelmet().hasItemMeta() &&
-          as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() &&
-          as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDOceanGliderEntity) {
+      if (as.getEquipment().getItemInMainHand() != null && as.getEquipment().getItemInMainHand().getType() == Material.NAUTILUS_SHELL) {
+        if (as.getEquipment().getItemInMainHand().hasItemMeta() &&
+          as.getEquipment().getItemInMainHand().getItemMeta().hasCustomModelData() &&
+          as.getEquipment().getItemInMainHand().getItemMeta().getCustomModelData() == Main.CMDOceanGliderEntity) {
+
+          ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+          ItemMeta meta = oceanGlider.getItemMeta();
+          meta.setCustomModelData(Main.CMDOceanGliderEntity);
+          meta.setDisplayName("§rOcean Glider");
+          oceanGlider.setItemMeta(meta);
+
+          ItemStack air = new ItemStack(Material.AIR);
+
+          as.setItemInHand(air);
+          as.setHelmet(oceanGlider);
 
           Player player = event.getPlayer();
           double x = as.getLocation().getX();
-          double y = as.getWorld().getHighestBlockYAt(as.getLocation()) + 0.81; //-1.6518909;
+          double y = as.getWorld().getHighestBlockYAt(as.getLocation()) + 0.81;
           double z = as.getLocation().getZ();
+
+          LocationBeforeArmorStandMap.put(as, as.getLocation());
+
           player.teleport(new Location(player.getWorld(), x, y, z, player.getYaw(), player.getPitch()));
           player.setGravity(false);
 
@@ -121,10 +137,23 @@ public class OceanGliderListeners implements Listener {
       player.setFlySpeed(0.1f);
       player.setGravity(true);
 
-      Location loc = as.getLocation();
+      float yaw = player.getYaw();
+      float pitch = player.getPitch();
 
       player.removePassenger(as);
-      as.teleport(loc);
+
+      as.setHelmet(new ItemStack(Material.AIR));
+
+      ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta meta = oceanGlider.getItemMeta();
+      meta.setCustomModelData(Main.CMDOceanGliderEntity);
+      meta.setDisplayName("§rOcean Glider");
+      oceanGlider.setItemMeta(meta);
+      as.setItemInHand(oceanGlider);
+
+      Location location = LocationBeforeArmorStandMap.get(as);
+      as.teleport(location);
+      as.setRotation(yaw, pitch);
 
       ridingPlayers.remove(event.getPlayer());
       playerArmorStandMap.remove(event.getPlayer(), as);
@@ -158,9 +187,12 @@ public class OceanGliderListeners implements Listener {
               Material clickedBlockType = rayTraceResult.getHitBlock().getType();
 
               if (clickedBlockType == Material.WATER) {
-                Location loc = rayTraceResult.getHitBlock().getLocation().add(0, 0.7, 0);
-                spawnOceanGlider(loc, player.getYaw(), player.getPitch());
-                lastPlacedBlockTimes.put(player, currentTime);
+                Location loc = rayTraceResult.getHitBlock().getLocation().add(0, /*0.7*/-1, 0);
+
+                if (loc.getBlock().isLiquid()){
+                  spawnOceanGlider(loc, player.getYaw(), player.getPitch());
+                  lastPlacedBlockTimes.put(player, currentTime);
+                }
                 if (player.getGameMode() != GameMode.CREATIVE) {
                   item.setAmount(item.getAmount() - 1);
                 }
@@ -181,7 +213,9 @@ public class OceanGliderListeners implements Listener {
     armorStand.setCustomName("OceanGlider");
     armorStand.setPersistent(true);
     armorStand.setCanMove(false);
-    armorStand.setVisible(false);
+
+    armorStand.setVisible(true);
+
     armorStand.setGravity(false);
     armorStand.setBasePlate(false);
     armorStand.setArms(false);
@@ -193,6 +227,6 @@ public class OceanGliderListeners implements Listener {
     meta.setDisplayName("§rOcean Glider");
     oceanGlider.setItemMeta(meta);
 
-    armorStand.setHelmet(oceanGlider);
+    armorStand.setItemInHand(oceanGlider);
   }
 }
