@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OceanGliderListeners implements Listener {
+
   private List<Player> ridingPlayers = new ArrayList<>();
   private Map<Player, ArmorStand> playerArmorStandMap = new HashMap<>();
   private Map<ArmorStand, Location> LocationBeforeArmorStandMap = new HashMap<>();
@@ -123,13 +124,30 @@ public class OceanGliderListeners implements Listener {
               player.setAllowFlight(false);
             }
             player.setFlying(false);
-            player.setFlySpeed(1f);
+            player.setFlySpeed(0.1f);
             player.setGravity(true);
+
+            float yaw = player.getYaw();
+            float pitch = player.getPitch();
 
             player.removePassenger(as);
 
+            as.setHelmet(new ItemStack(Material.AIR));
+
+            ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+            ItemMeta meta = oceanGlider.getItemMeta();
+            meta.setCustomModelData(Main.CMDOceanGliderEntity);
+            meta.setDisplayName("§rOcean Glider");
+            oceanGlider.setItemMeta(meta);
+            as.setItemInHand(oceanGlider);
+
+            Location location = LocationBeforeArmorStandMap.get(as);
+            as.teleport(location.add(0, 0.2, 0));
+            as.setRotation(yaw, pitch);
+
             ridingPlayers.remove(event.getPlayer());
             playerArmorStandMap.remove(event.getPlayer(), as);
+            return;
           }
           event.setCancelled(true);
           return;
@@ -143,6 +161,7 @@ public class OceanGliderListeners implements Listener {
 
       if (as != null){
         as.setRotation(player.getYaw(), player.getPitch());
+        LocationBeforeArmorStandMap.put(as, player.getLocation());
       }
 
       double fromY = event.getFrom().getY();
@@ -159,7 +178,6 @@ public class OceanGliderListeners implements Listener {
       if (currentDistance >= 300) {
         as.remove();
         if (ridingPlayers.contains(player) && playerArmorStandMap.containsKey(player)) {
-
           if (!(player.isOp())){
             player.setAllowFlight(false);
           }
@@ -167,7 +185,23 @@ public class OceanGliderListeners implements Listener {
           player.setFlySpeed(0.1f);
           player.setGravity(true);
 
+          float yaw = player.getYaw();
+          float pitch = player.getPitch();
+
           player.removePassenger(as);
+
+          as.setHelmet(new ItemStack(Material.AIR));
+
+          ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+          ItemMeta meta = oceanGlider.getItemMeta();
+          meta.setCustomModelData(Main.CMDOceanGliderEntity);
+          meta.setDisplayName("§rOcean Glider");
+          oceanGlider.setItemMeta(meta);
+          as.setItemInHand(oceanGlider);
+
+          Location location = LocationBeforeArmorStandMap.get(as);
+          as.teleport(location);
+          as.setRotation(yaw, pitch);
 
           ridingPlayers.remove(event.getPlayer());
           playerArmorStandMap.remove(event.getPlayer(), as);
@@ -211,7 +245,7 @@ public class OceanGliderListeners implements Listener {
       as.setItemInHand(oceanGlider);
 
       Location location = LocationBeforeArmorStandMap.get(as);
-      as.teleport(location);
+      as.teleport(location.add(0, 0.2, 0));
       as.setRotation(yaw, pitch);
 
       ridingPlayers.remove(event.getPlayer());
