@@ -14,7 +14,7 @@ public class OceanGlider {
     armorStand.setCustomName("OceanGlider");
     armorStand.setPersistent(true);
     armorStand.setCanMove(false);
-    armorStand.setVisible(false);
+    armorStand.setVisible(true);
     armorStand.setGravity(false);
     armorStand.setBasePlate(false);
     armorStand.setArms(false);
