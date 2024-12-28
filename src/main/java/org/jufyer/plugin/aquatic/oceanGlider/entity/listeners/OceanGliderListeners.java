@@ -39,7 +39,7 @@ public class OceanGliderListeners implements Listener {
 
           Player player = event.getPlayer();
           double x = as.getLocation().getX();
-          double y = as.getLocation().getY() -1.975;
+          double y = as.getWorld().getHighestBlockYAt(as.getLocation()) + 0.81; //-1.6518909;
           double z = as.getLocation().getZ();
           player.teleport(new Location(player.getWorld(), x, y, z, player.getYaw(), player.getPitch()));
           player.setGravity(false);
@@ -91,9 +91,11 @@ public class OceanGliderListeners implements Listener {
 
       player.setAllowFlight(true);
       player.setFlying(true);
-      player.setFlySpeed(0.1f);
+      player.setFlySpeed(0.2f);
 
-      as.setRotation(player.getYaw(), player.getPitch());
+      if (as != null){
+        as.setRotation(player.getYaw(), player.getPitch());
+      }
 
       double fromY = event.getFrom().getY();
       double toY = event.getTo().getY();
@@ -157,7 +159,7 @@ public class OceanGliderListeners implements Listener {
 
               if (clickedBlockType == Material.WATER) {
                 Location loc = rayTraceResult.getHitBlock().getLocation().add(0, 0.7, 0);
-                spawnOceanGlider(loc);
+                spawnOceanGlider(loc, player.getYaw(), player.getPitch());
                 lastPlacedBlockTimes.put(player, currentTime);
                 if (player.getGameMode() != GameMode.CREATIVE) {
                   item.setAmount(item.getAmount() - 1);
@@ -174,15 +176,16 @@ public class OceanGliderListeners implements Listener {
   }
 
 
-  public void spawnOceanGlider(Location location) {
+  public void spawnOceanGlider(Location location, float yaw, float pitch) {
     ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 2, 0), EntityType.ARMOR_STAND);
     armorStand.setCustomName("OceanGlider");
     armorStand.setPersistent(true);
     armorStand.setCanMove(false);
-    armorStand.setVisible(true);
+    armorStand.setVisible(false);
     armorStand.setGravity(false);
     armorStand.setBasePlate(false);
     armorStand.setArms(false);
+    armorStand.setRotation(yaw, pitch);
 
     ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
     ItemMeta meta = oceanGlider.getItemMeta();
