@@ -14,17 +14,17 @@ public class GiveOceanGlider implements CommandExecutor {
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
     Player player = (Player) sender;
+    if (player.isOp()){
+      ItemStack oceanGlider;
+      oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
 
-    ItemStack oceanGlider;
-    oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta meta = oceanGlider.getItemMeta();
+      meta.setCustomModelData(Main.CMDOceanGlider);
+      meta.setDisplayName("§rOcean Glider");
+      oceanGlider.setItemMeta(meta);
 
-    ItemMeta meta = oceanGlider.getItemMeta();
-    meta.setCustomModelData(Main.CMDOceanGlider);
-    meta.setDisplayName("§rOcean Glider");
-    oceanGlider.setItemMeta(meta);
-
-    player.getInventory().addItem(oceanGlider);
-
+      player.getInventory().addItem(oceanGlider);
+    }
     return false;
   }
 }
