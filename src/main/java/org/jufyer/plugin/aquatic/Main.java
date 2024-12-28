@@ -2,6 +2,11 @@ package org.jufyer.plugin.aquatic;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,14 +17,19 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jufyer.plugin.aquatic.commands.GiveOceanGlider;
+import org.jufyer.plugin.aquatic.commands.SpawnNibbler;
+import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
 import org.jufyer.plugin.aquatic.commands.SpawnOceanGlider;
 import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListeners;
-import org.jufyer.plugin.aquatic.oceanGlider.item.OceanGliderItem;
 import org.jufyer.plugin.aquatic.whale.entity.Whale;
 import org.jufyer.plugin.aquatic.whale.listeners.customBlockListeners;
 import org.jufyer.plugin.aquatic.whale.listeners.generateStructure;
 import org.jufyer.plugin.aquatic.whale.listeners.rightClickListener;
 import org.jufyer.plugin.aquatic.whale.listeners.spawnListener;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
@@ -29,6 +39,7 @@ public final class Main extends JavaPlugin implements Listener {
   public static final int CMDBarnacleSpikeExtended = 2195;
   public static final int CMDOceanGlider = 157;
   public static final int CMDOceanGliderEntity = 1575;
+  public static final int CMDNibblerBucket = 149221;
 
   public static Main getInstance() {
     return instance;
@@ -37,17 +48,18 @@ public final class Main extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     instance = this;
-    new OceanGliderItem();
 
     getCommand("spawnOceanGlider").setExecutor(new SpawnOceanGlider());
     getCommand("giveOceanGlider").setExecutor(new GiveOceanGlider());
     getCommand("spawnWhale").setExecutor(this);
+    getCommand("spawnNibbler").setExecutor(new SpawnNibbler());
 
     Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
     Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);
     Bukkit.getPluginManager().registerEvents(new generateStructure(), this);
     Bukkit.getPluginManager().registerEvents(new customBlockListeners(), this);
     Bukkit.getPluginManager().registerEvents(new OceanGliderListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new GeneratePrismarineOceanRuin(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
@@ -87,7 +99,56 @@ public final class Main extends JavaPlugin implements Listener {
     if (isOP){
       new Whale(player.getLocation());
     }
+    //saveBlockData(player);
 
     return false;
+  }
+
+  private void saveBlockData(Player player) {
+    Map<String, String> blockData = new HashMap<>();
+    List<Material> targetMaterials = List.of(
+      Material.PRISMARINE,
+      Material.PRISMARINE_SLAB,
+      Material.PRISMARINE_STAIRS,
+      Material.DARK_PRISMARINE,
+      Material.DARK_PRISMARINE_STAIRS,
+      Material.PRISMARINE_BRICKS,
+      Material.CHEST
+    );
+
+    int radius = 15;
+    for (int x = -radius; x <= radius; x++) {
+      for (int y = -radius; y <= radius; y++) {
+        for (int z = -radius; z <= radius; z++) {
+          Block block = player.getLocation().add(x, y, z).getBlock();
+          if (targetMaterials.contains(block.getType())) {
+            String relativeCoordinates = x + ", " + y + ", " + z;
+            String blockType = block.getType().name();
+            String rotation = "NONE";
+
+            // Check block data for rotation
+            if (block.getBlockData() instanceof Directional) {
+              Directional directional = (Directional) block.getBlockData();
+              rotation = directional.getFacing().name();
+            } else if (block.getBlockData() instanceof Orientable) {
+              Orientable orientable = (Orientable) block.getBlockData();
+              rotation = orientable.getAxis().name();
+            } else if (block.getBlockData() instanceof Bisected) {
+              Bisected bisected = (Bisected) block.getBlockData();
+              rotation = bisected.getHalf().name();
+            } else if (block.getBlockData() instanceof Slab) {
+              Slab slab = (Slab) block.getBlockData();
+              rotation = slab.getType().name();
+            }
+
+            blockData.put(relativeCoordinates, "Type: " + blockType + ", Rotation: " + rotation);
+          }
+        }
+      }
+    }
+
+    blockData.forEach((coordinates, data) -> {
+      getLogger().info("Coordinates: " + coordinates + " | " + data);
+    });
   }
 }
