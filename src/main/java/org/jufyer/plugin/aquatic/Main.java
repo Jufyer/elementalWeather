@@ -18,6 +18,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jufyer.plugin.aquatic.commands.GiveOceanGlider;
 import org.jufyer.plugin.aquatic.commands.SpawnNibbler;
+import org.jufyer.plugin.aquatic.nibblers.entity.Nibbler;
+import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
 import org.jufyer.plugin.aquatic.commands.SpawnOceanGlider;
 import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListeners;
@@ -60,6 +62,7 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new customBlockListeners(), this);
     Bukkit.getPluginManager().registerEvents(new OceanGliderListeners(), this);
     Bukkit.getPluginManager().registerEvents(new GeneratePrismarineOceanRuin(), this);
+    Bukkit.getPluginManager().registerEvents(new NibblerListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);

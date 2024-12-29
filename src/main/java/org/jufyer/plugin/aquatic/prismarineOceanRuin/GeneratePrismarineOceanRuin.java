@@ -17,6 +17,7 @@ import org.bukkit.generator.structure.StructureType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jufyer.plugin.aquatic.Main;
+import org.jufyer.plugin.aquatic.nibblers.entity.Nibbler;
 
 import java.util.Random;
 
@@ -30,6 +31,16 @@ public class GeneratePrismarineOceanRuin implements Listener {
           Location loc = new Location(event.getWorld(), event.getBoundingBox().getCenterX(), event.getBoundingBox().getMinY(), event.getBoundingBox().getCenterZ());
           if (loc.getWorld().getBiome(loc) == Biome.COLD_OCEAN || loc.getWorld().getBiome(loc) == Biome.OCEAN || loc.getWorld().getBiome(loc) == Biome.DEEP_COLD_OCEAN || loc.getWorld().getBiome(loc) == Biome.DEEP_OCEAN || loc.getWorld().getBiome(loc) == Biome.DEEP_COLD_OCEAN || loc.getWorld().getBiome(loc) == Biome.WARM_OCEAN){
             placeBlocks(loc);
+            Random random = new Random();
+            if (random.nextInt(3, 4) == 3){
+              for (int i = 0; i < 4; i++) {
+                new Nibbler(loc.add(5, 10, 6));
+              }
+            }else if (random.nextInt(3, 4) == 4){
+              for (int i = 0; i < 5; i++) {
+                new Nibbler(loc.add(5, 10, 6));
+              }
+            }
           }
         });
         event.setCancelled(true);
