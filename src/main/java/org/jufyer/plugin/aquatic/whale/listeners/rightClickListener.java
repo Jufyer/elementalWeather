@@ -13,6 +13,7 @@ import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTable;
 import org.bukkit.loot.LootTables;
 import org.jufyer.plugin.aquatic.Main;
+import org.jufyer.plugin.aquatic.whale.entity.Whale;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +25,7 @@ public class rightClickListener implements Listener {
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-    if (event.getPlayer().getActiveItem() != null && event.getRightClicked().getName().equals("with")) {
+    if (event.getPlayer().getActiveItem() != null && event.getRightClicked().getName().equals("with") && event.getRightClicked().getPersistentDataContainer().getKeys().contains(Whale.WHALE_KEY)) {
       if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SHEARS) {
         event.getRightClicked().setCustomName("out");
 

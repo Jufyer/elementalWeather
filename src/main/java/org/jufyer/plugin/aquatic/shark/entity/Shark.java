@@ -1,4 +1,4 @@
-package org.jufyer.plugin.aquatic.whale.entity;
+package org.jufyer.plugin.aquatic.shark.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,34 +14,32 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jufyer.plugin.aquatic.Main;
 
-public class Whale extends Dolphin {
+public class Shark extends Dolphin{
+  public static final NamespacedKey SHARK_KEY = new NamespacedKey(Main.getInstance(), "SHARK");
 
-  public static final NamespacedKey WHALE_KEY = new NamespacedKey(Main.getInstance(), "Whale");
+  public Shark(Location loc) {
 
-
-  public Whale(Location loc) {
     super(EntityType.DOLPHIN, ((CraftWorld) loc.getWorld()).getHandle());
 
+
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
-    this.getBukkitEntity().getPersistentDataContainer().set(WHALE_KEY, PersistentDataType.BOOLEAN, true);
+    this.getBukkitEntity().getPersistentDataContainer().set(SHARK_KEY, PersistentDataType.BOOLEAN, true);
     this.setInvulnerable(true);
-    this.setCustomName(Component.nullToEmpty("with"));
+    this.setCustomName(Component.nullToEmpty("Shark"));
     this.setCustomNameVisible(false);
 
     this.persist = true;
 
-
-    ((CraftWorld) loc.getWorld()).getHandle().addFreshEntity(this, SpawnReason.CUSTOM);
-
+    ((CraftWorld) loc.getWorld()).getHandle().addFreshEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
   }
 
   @Override
   public void setTreasurePos(BlockPos treasurePos) {
-
   }
 
   @Override
@@ -66,16 +64,18 @@ public class Whale extends Dolphin {
 
   @Override
   protected void registerGoals() {
-    this.goalSelector.addGoal(2, new BreathAirGoal(this));
     this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
     this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
     this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-    this.goalSelector.addGoal(5, new DolphinJumpGoal(this, 10));
     this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.2000000476837158D, true));
-    this.goalSelector.addGoal(8, new FollowBoatGoal(this));
     this.goalSelector.addGoal(9, new AvoidEntityGoal<>(this, Guardian.class, 8.0F, 1.0D, 1.0D));
     this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[]{Guardian.class})).setAlertOthers());
+  }
+
+  @Override
+  protected int increaseAirSupply(int air) {
+    return this.getMaxAirSupply();
   }
 
   @Override
@@ -108,7 +108,6 @@ public class Whale extends Dolphin {
       }
     }
   }
-
 
   @Override
   public boolean canBeLeashed() {

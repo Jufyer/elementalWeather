@@ -28,7 +28,7 @@ import org.jufyer.plugin.aquatic.Main;
 
 public class Nibbler extends Cod {
 
-  public static final NamespacedKey KEY = new NamespacedKey(Main.getInstance(), "Nibbler");
+  public static final NamespacedKey NIBBLER_KEY = new NamespacedKey(Main.getInstance(), "Nibbler");
 
   public Nibbler(Location loc) {
 
@@ -36,7 +36,7 @@ public class Nibbler extends Cod {
 
 
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
-    this.getBukkitEntity().getPersistentDataContainer().set(KEY, PersistentDataType.BOOLEAN, true);
+    this.getBukkitEntity().getPersistentDataContainer().set(NIBBLER_KEY, PersistentDataType.BOOLEAN, true);
     this.setInvulnerable(true);
     this.setCustomName(Component.nullToEmpty("Nibbler"));
     this.setCustomNameVisible(false);

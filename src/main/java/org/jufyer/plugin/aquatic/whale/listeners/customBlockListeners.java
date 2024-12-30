@@ -139,16 +139,20 @@ public class customBlockListeners implements Listener {
         if (as.getLocation().getBlockX() == blockLoc.getBlockX() &&
           as.getLocation().getBlockY() == blockLoc.getBlockY() &&
           as.getLocation().getBlockZ() == blockLoc.getBlockZ()) {
-          as.remove();
+          if (as.getEquipment().getHelmet().hasItemMeta() && as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() && as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDBarnacleSpike
+          || as.getEquipment().getHelmet().hasItemMeta() && as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() && as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDBarnacleSpikeExtended){
 
-          ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
-          ItemMeta meta = Barnacles.getItemMeta();
-          if (meta != null) {
+            as.remove();
+
+            ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
+            ItemMeta meta = Barnacles.getItemMeta();
+
             meta.setDisplayName("§rBarnacle Spike");
             meta.setCustomModelData(Main.CMDBarnacleSpike);
             Barnacles.setItemMeta(meta);
+
+            as.getWorld().dropItemNaturally(as.getLocation(), Barnacles);
           }
-          as.getWorld().dropItemNaturally(as.getLocation(), Barnacles);
         }
       }
     }
@@ -170,30 +174,31 @@ public class customBlockListeners implements Listener {
             if (as.getLocation().getBlockX() == blockLoc.getBlockX() &&
               as.getLocation().getBlockY() == blockLoc.getBlockY() &&
               as.getLocation().getBlockZ() == blockLoc.getBlockZ()) {
+              if (as.getEquipment().getHelmet().hasItemMeta() && as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() && as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDBarnacleSpike){
+                as.getEquipment().getHelmet().setAmount(0);
 
-              as.getEquipment().getHelmet().setAmount(0);
+                ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
+                ItemMeta meta = Barnacles.getItemMeta();
+                if (meta != null) {
+                  meta.setDisplayName("§rBarnacle Spike Extended");
+                  meta.setCustomModelData(Main.CMDBarnacleSpikeExtended);
+                  Barnacles.setItemMeta(meta);
+                }
+                as.setInvisible(true);
+                as.setGravity(false);
+                as.setBodyYaw(0);
+                as.setRotation(0, 0);
+                as.setCanMove(false);
+                as.setCustomNameVisible(false);
+                as.setPersistent(true);
 
-              ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
-              ItemMeta meta = Barnacles.getItemMeta();
-              if (meta != null) {
-                meta.setDisplayName("§rBarnacle Spike Extended");
-                meta.setCustomModelData(Main.CMDBarnacleSpikeExtended);
-                Barnacles.setItemMeta(meta);
-              }
-              as.setInvisible(true);
-              as.setGravity(false);
-              as.setBodyYaw(0);
-              as.setRotation(0, 0);
-              as.setCanMove(false);
-              as.setCustomNameVisible(false);
-              as.setPersistent(true);
+                as.getEquipment().setHelmet(Barnacles);
 
-              as.getEquipment().setHelmet(Barnacles);
-
-              for (Entity player : as.getNearbyEntities(0, 1, 0)){
-                if (player instanceof  Player){
-                  Player p = (Player) player;
-                  p.damage(5);
+                for (Entity player : as.getNearbyEntities(0, 1, 0)){
+                  if (player instanceof  Player){
+                    Player p = (Player) player;
+                    p.damage(5);
+                  }
                 }
               }
             }
@@ -208,24 +213,26 @@ public class customBlockListeners implements Listener {
             as.getLocation().getBlockY() == blockLoc.getBlockY() &&
             as.getLocation().getBlockZ() == blockLoc.getBlockZ()) {
 
-            as.getEquipment().getHelmet().setAmount(0);
+            if (as.getEquipment().getHelmet().hasItemMeta() && as.getEquipment().getHelmet().getItemMeta().hasCustomModelData() && as.getEquipment().getHelmet().getItemMeta().getCustomModelData() == Main.CMDBarnacleSpikeExtended){
+              as.getEquipment().getHelmet().setAmount(0);
 
-            ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
-            ItemMeta meta = Barnacles.getItemMeta();
-            if (meta != null) {
-              meta.setDisplayName("§rBarnacle Spike");
-              meta.setCustomModelData(Main.CMDBarnacleSpike);
-              Barnacles.setItemMeta(meta);
+              ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
+              ItemMeta meta = Barnacles.getItemMeta();
+              if (meta != null) {
+                meta.setDisplayName("§rBarnacle Spike");
+                meta.setCustomModelData(Main.CMDBarnacleSpike);
+                Barnacles.setItemMeta(meta);
+              }
+              as.setInvisible(true);
+              as.setGravity(false);
+              as.setBodyYaw(0);
+              as.setRotation(0, 0);
+              as.setCanMove(false);
+              as.setCustomNameVisible(false);
+              as.setPersistent(true);
+
+              as.getEquipment().setHelmet(Barnacles);
             }
-            as.setInvisible(true);
-            as.setGravity(false);
-            as.setBodyYaw(0);
-            as.setRotation(0, 0);
-            as.setCanMove(false);
-            as.setCustomNameVisible(false);
-            as.setPersistent(true);
-
-            as.getEquipment().setHelmet(Barnacles);
           }
         }
       }

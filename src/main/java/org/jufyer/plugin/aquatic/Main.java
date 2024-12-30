@@ -18,16 +18,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jufyer.plugin.aquatic.commands.GiveOceanGlider;
 import org.jufyer.plugin.aquatic.commands.SpawnNibbler;
-import org.jufyer.plugin.aquatic.nibblers.entity.Nibbler;
+import org.jufyer.plugin.aquatic.commands.SpawnShark;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
 import org.jufyer.plugin.aquatic.commands.SpawnOceanGlider;
 import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListeners;
+import org.jufyer.plugin.aquatic.shark.listeners.SharkListeners;
+import org.jufyer.plugin.aquatic.spikyPiston.listeners.SpikyPistonListeners;
 import org.jufyer.plugin.aquatic.whale.entity.Whale;
-import org.jufyer.plugin.aquatic.whale.listeners.customBlockListeners;
-import org.jufyer.plugin.aquatic.whale.listeners.generateStructure;
-import org.jufyer.plugin.aquatic.whale.listeners.rightClickListener;
-import org.jufyer.plugin.aquatic.whale.listeners.spawnListener;
+import org.jufyer.plugin.aquatic.whale.listeners.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +41,23 @@ public final class Main extends JavaPlugin implements Listener {
   public static final int CMDOceanGlider = 157;
   public static final int CMDOceanGliderEntity = 1575;
   public static final int CMDNibblerBucket = 149221;
+  public static final int CMDSharkTooth = 1982015;
+
+  public static final int CMDSpikyPistonItem = 191619;
+
+  public static final int CMDSpikyPistonNorth = 191641;
+  public static final int CMDSpikyPistonEast = 19165;
+  public static final int CMDSpikyPistonSouth = 191619;
+  public static final int CMDSpikyPistonWest = 191623;
+  public static final int CMDSpikyPistonUp = 191621;
+  public static final int CMDSpikyPistonDown = 19164;
+
+  public static final int CMDSpikyPistonExtendedNorth = 1916514;
+  public static final int CMDSpikyPistonExtendedEast = 191655;
+  public static final int CMDSpikyPistonExtendedSouth = 1916519;
+  public static final int CMDSpikyPistonExtendedWest = 1916523;
+  public static final int CMDSpikyPistonExtendedUp = 1916521;
+  public static final int CMDSpikyPistonExtendedDown = 191654;
 
   public static Main getInstance() {
     return instance;
@@ -55,6 +71,7 @@ public final class Main extends JavaPlugin implements Listener {
     getCommand("giveOceanGlider").setExecutor(new GiveOceanGlider());
     getCommand("spawnWhale").setExecutor(this);
     getCommand("spawnNibbler").setExecutor(new SpawnNibbler());
+    getCommand("spawnShark").setExecutor(new SpawnShark());
 
     Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
     Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);
@@ -63,6 +80,9 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new OceanGliderListeners(), this);
     Bukkit.getPluginManager().registerEvents(new GeneratePrismarineOceanRuin(), this);
     Bukkit.getPluginManager().registerEvents(new NibblerListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new SharkListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new WhaleListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new SpikyPistonListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
@@ -87,6 +107,26 @@ public final class Main extends JavaPlugin implements Listener {
     barnacles_spike.setIngredient('R', Material.REDSTONE);
 
     getServer().addRecipe(barnacles_spike);
+
+    ItemStack sharkTooth = new ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta SharkToothMeta = sharkTooth.getItemMeta();
+    SharkToothMeta.setDisplayName("§rShark Tooth");
+    SharkToothMeta.setCustomModelData(Main.CMDSharkTooth);
+    sharkTooth.setItemMeta(SharkToothMeta);
+
+    ItemStack spikyPiston = new ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta SpikyPistonMeta = spikyPiston.getItemMeta();
+    SpikyPistonMeta.setDisplayName("§rSpiky Piston");
+    SpikyPistonMeta.setCustomModelData(CMDSpikyPistonItem);
+    spikyPiston.setItemMeta(SpikyPistonMeta);
+
+    ShapedRecipe SpikyPiston = new ShapedRecipe(spikyPiston);
+    SpikyPiston.shape("TTT", "TPT", "   ");
+
+    SpikyPiston.setIngredient('T', new RecipeChoice.ExactChoice(sharkTooth)); // Custom Item
+    SpikyPiston.setIngredient('P', Material.PISTON);
+
+    getServer().addRecipe(SpikyPiston);
   }
 
   @Override

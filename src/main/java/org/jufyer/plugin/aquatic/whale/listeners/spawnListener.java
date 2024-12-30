@@ -9,10 +9,12 @@ import org.jufyer.plugin.aquatic.whale.entity.Whale;
 
 import java.util.Random;
 
+import static org.jufyer.plugin.aquatic.shark.entity.Shark.SHARK_KEY;
+
 public class spawnListener implements Listener {
   @EventHandler
   public void onEntitySpawn(EntitySpawnEvent event) {
-    if (event.getEntity().getType().equals(EntityType.DOLPHIN)){
+    if (event.getEntity().getType().equals(EntityType.DOLPHIN) && (!event.getEntity().getPersistentDataContainer().getKeys().contains(SHARK_KEY))){
       Random random = new Random();
       int i = random.nextInt(5);
       if (i == 4){

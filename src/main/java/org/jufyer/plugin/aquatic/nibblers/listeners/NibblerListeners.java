@@ -36,7 +36,7 @@ public class NibblerListeners implements Listener {
   public void onPlayerBucketEntity(PlayerBucketEntityEvent event) {
     Entity entity = event.getEntity();
     ItemStack newBucket = event.getEntityBucket();
-    if (entity.getType() == EntityType.COD && entity.getName().equals("Nibbler")){
+    if (entity.getType() == EntityType.COD && entity.getName().equals("Nibbler") && entity.getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)){
       ItemStack Nibbler_Bucket = new ItemStack(Material.COD_BUCKET);
       ItemMeta meta = Nibbler_Bucket.getItemMeta();
       meta.setCustomModelData(Main.CMDNibblerBucket);
@@ -97,7 +97,7 @@ public class NibblerListeners implements Listener {
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
     Player player = event.getPlayer();
     Entity entity = event.getRightClicked();
-    if (entity.getType() == EntityType.COD && entity.getName().equals("Nibbler")) {
+    if (entity.getType() == EntityType.COD && entity.getName().equals("Nibbler") && entity.getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)) {
       if (player.getItemInHand().getType() == Material.DRIED_KELP) {
         Location loc = entity.getLocation();
         player.getWorld().spawnParticle(Particle.HEART, loc, 30, 0.1, 0.1, 0.1);
@@ -144,7 +144,7 @@ public class NibblerListeners implements Listener {
           break;
         }
       }
-    } else if (entity.getName().equals("Nibbler")) {
+    } else if (entity.getName().equals("Nibbler")  && entity.getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)) {
       List<Entity> nearbyEntities = entity.getNearbyEntities(20, 20, 20);
       for (Entity player : nearbyEntities) {
         if (player instanceof Player){
@@ -169,7 +169,7 @@ public class NibblerListeners implements Listener {
 
   @EventHandler
   public void onEntityDeath(EntityDeathEvent event) {
-    if (event.getEntity().getType() == EntityType.COD && event.getEntity().getName().equals("Nibbler")) {
+    if (event.getEntity().getType() == EntityType.COD && event.getEntity().getName().equals("Nibbler")  && event.getEntity().getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)) {
       for (ItemStack drop : event.getDrops()){
         drop.setAmount(0);
       }
