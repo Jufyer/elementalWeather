@@ -1,7 +1,9 @@
 package org.jufyer.plugin.aquatic;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Directional;
@@ -15,25 +17,34 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jufyer.plugin.aquatic.commands.GiveOceanGlider;
-import org.jufyer.plugin.aquatic.commands.SpawnNibbler;
-import org.jufyer.plugin.aquatic.commands.SpawnShark;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
+import org.jufyer.plugin.aquatic.brewing.BrewingControler;
+import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
+import org.jufyer.plugin.aquatic.commands.*;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
+import org.jufyer.plugin.aquatic.oyster.listener.OysterListeners;
+import org.jufyer.plugin.aquatic.oyster.listener.PotionOfLuckListeners;
 import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
-import org.jufyer.plugin.aquatic.commands.SpawnOceanGlider;
 import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListeners;
 import org.jufyer.plugin.aquatic.shark.listeners.SharkListeners;
 import org.jufyer.plugin.aquatic.spikyPiston.listeners.SpikyPistonListeners;
 import org.jufyer.plugin.aquatic.whale.entity.Whale;
 import org.jufyer.plugin.aquatic.whale.listeners.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
+  public static BrewingControler bc;
 
   public static final int CMDBarnacle = 21;
   public static final int CMDBarnacleSpike = 219;
@@ -59,6 +70,13 @@ public final class Main extends JavaPlugin implements Listener {
   public static final int CMDSpikyPistonExtendedUp = 1916521;
   public static final int CMDSpikyPistonExtendedDown = 191654;
 
+  public static final int CMDOyster = 1525;
+  public static final int CMDOysterWithPearl = 15252316;
+  public static final int CMDRawOyster = 1811525;
+  public static final int CMDDeadOyster = 451525;
+  public static final int CMDPearl = 165;
+  public static final int CMDPotionOfLuck = 161515;
+
   public static Main getInstance() {
     return instance;
   }
@@ -72,6 +90,7 @@ public final class Main extends JavaPlugin implements Listener {
     getCommand("spawnWhale").setExecutor(this);
     getCommand("spawnNibbler").setExecutor(new SpawnNibbler());
     getCommand("spawnShark").setExecutor(new SpawnShark());
+    getCommand("spawnOyster").setExecutor(new SpawnOyster());
 
     Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
     Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);
@@ -83,6 +102,8 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new SharkListeners(), this);
     Bukkit.getPluginManager().registerEvents(new WhaleListeners(), this);
     Bukkit.getPluginManager().registerEvents(new SpikyPistonListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new OysterListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
@@ -127,6 +148,8 @@ public final class Main extends JavaPlugin implements Listener {
     SpikyPiston.setIngredient('P', Material.PISTON);
 
     getServer().addRecipe(SpikyPiston);
+
+    addBrewingRecipe();
   }
 
   @Override
@@ -193,5 +216,37 @@ public final class Main extends JavaPlugin implements Listener {
     blockData.forEach((coordinates, data) -> {
       getLogger().info("Coordinates: " + coordinates + " | " + data);
     });
+  }
+
+  public static void addBrewingRecipe() {
+    ItemStack resetPotion = new ItemStack(Material.POTION);
+    resetPotion.setAmount(1);
+    ItemMeta meta = resetPotion.getItemMeta();
+    meta.setCustomModelData(CMDPotionOfLuck);
+    meta.setDisplayName("§rPotion of Luck");
+    ((PotionMeta) meta).setColor(Color.LIME);
+    ((PotionMeta) meta).addCustomEffect(new PotionEffect(PotionEffectType.LUCK, 900, 0), true);
+
+    resetPotion.setItemMeta(meta);
+
+    ItemStack pearl = new ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta pearlMeta = pearl.getItemMeta();
+    pearlMeta.setCustomModelData(Main.CMDPearl);
+    pearlMeta.setDisplayName("§rPearl");
+    pearl.setItemMeta(pearlMeta);
+
+    ItemStack bottle = new ItemStack(Material.POTION, 1);
+    PotionMeta pmeta = (PotionMeta) bottle.getItemMeta();
+    pmeta.setBasePotionType(PotionType.WATER);
+    bottle.setItemMeta(pmeta);
+
+    bc = new BrewingControler(Main.getInstance());
+    BrewingRecipe recipe = new BrewingRecipe(
+      new NamespacedKey(Main.getInstance(), "customPotion"),
+      resetPotion,
+      pearl,
+      bottle
+    );
+    bc.addRecipe(recipe);
   }
 }

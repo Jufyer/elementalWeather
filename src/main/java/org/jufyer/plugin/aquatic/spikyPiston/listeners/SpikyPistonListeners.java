@@ -25,19 +25,19 @@ import java.util.Map;
 import static org.jufyer.plugin.aquatic.Main.CMDSpikyPistonItem;
 
 public class SpikyPistonListeners implements Listener {
-  @EventHandler
-  public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-    List<Block> blocks = event.getBlocks();
-
-    if (!blocks.isEmpty()) {
-      Block block = blocks.get(0);
-
-      if (block.getType().getBlastResistance() <= 6) {
-        block.setType(Material.AIR);
-        event.setCancelled(true);
-      }
-    }
-  }
+//  @EventHandler
+//  public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+//    List<Block> blocks = event.getBlocks();
+//
+//    if (!blocks.isEmpty()) {
+//      Block block = blocks.get(0);
+//
+//      if (block.getType().getBlastResistance() <= 6) {
+//        block.setType(Material.AIR);
+//        event.setCancelled(true);
+//      }
+//    }
+//  }
 
   private final Map<Player, Long> lastPlacedBlockTimes = new HashMap<>();
   private static final long COOLDOWN_TIME = 250;
@@ -140,6 +140,7 @@ public class SpikyPistonListeners implements Listener {
     as.setCanMove(false);
     as.setCustomNameVisible(false);
     as.setPersistent(true);
+
 
     as.getEquipment().setHelmet(Barnacles);
 
