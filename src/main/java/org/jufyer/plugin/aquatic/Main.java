@@ -24,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jufyer.plugin.aquatic.bannerOnBoats.listeners.BannerOnBoatsListeners;
 import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
 import org.jufyer.plugin.aquatic.commands.*;
@@ -110,6 +111,7 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new OysterListeners(), this);
     Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
     Bukkit.getPluginManager().registerEvents(new FurnaceListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new BannerOnBoatsListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
@@ -214,7 +216,6 @@ public final class Main extends JavaPlugin implements Listener {
             String blockType = block.getType().name();
             String rotation = "NONE";
 
-            // Check block data for rotation
             if (block.getBlockData() instanceof Directional) {
               Directional directional = (Directional) block.getBlockData();
               rotation = directional.getFacing().name();
