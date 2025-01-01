@@ -2,6 +2,7 @@ package org.jufyer.plugin.aquatic.oyster.listener;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -33,6 +35,7 @@ public class OysterListeners implements Listener {
   public static final NamespacedKey OYSTER_KEY = new NamespacedKey(Main.getInstance(), "OYSTER");
   public static final NamespacedKey OYSTER_USED_KEY = new NamespacedKey(Main.getInstance(), "OYSTER_USED");
   public static final NamespacedKey RAW_OYSTER_KEY = new NamespacedKey(Main.getInstance(), "RAW_OYSTER");
+  public static final NamespacedKey COOKED_OYSTER_KEY = new NamespacedKey(Main.getInstance(), "COOKED_OYSTER");
 
 
   @EventHandler
@@ -203,6 +206,10 @@ public class OysterListeners implements Listener {
       return;
     }
 
+    if (event.getClickedBlock() != null && isInteractable(event.getClickedBlock().getType())) {
+      return;
+    }
+
     if (hand.hasItemMeta() && hand.getItemMeta().hasCustomModelData() && hand.getItemMeta().getCustomModelData() == CMDRawOyster) {
       long currentTime = System.currentTimeMillis();
 
@@ -222,5 +229,42 @@ public class OysterListeners implements Listener {
     }
   }
 
-  //TODO: Ofen ding hinzufügen
+  private boolean isInteractable(Material material) {
+    return material == Material.CRAFTING_TABLE ||
+      material == Material.CHEST ||
+      material == Material.FURNACE ||
+      material == Material.ANVIL ||
+      material == Material.BARREL ||
+      material == Material.BREWING_STAND ||
+      material == Material.ENCHANTING_TABLE ||
+      material == Material.HOPPER ||
+      material == Material.DISPENSER ||
+      material == Material.DROPPER ||
+      material == Material.LECTERN ||
+      material == Material.STONECUTTER ||
+      material == Material.GRINDSTONE ||
+      material == Material.LOOM ||
+      material == Material.BLAST_FURNACE ||
+      material == Material.SMOKER ||
+      material == Material.CARTOGRAPHY_TABLE ||
+      material == Material.COMPOSTER ||
+      material == Material.NOTE_BLOCK ||
+      material == Material.JUKEBOX ||
+      material == Material.TRAPPED_CHEST ||
+      material == Material.OAK_DOOR ||
+      material == Material.CHISELED_BOOKSHELF ||
+      material == Material.REPEATER ||
+      material == Material.COMPARATOR ||
+      material == Material.DECORATED_POT ||
+      material.name().endsWith("_DOOR") ||
+      material.name().endsWith("_TRAPDOOR") ||
+      material.name().endsWith("_PRESSURE_PLATE") ||
+      material.name().endsWith("_FENCE") ||
+      material.name().endsWith("_FENCE_GATE") ||
+      material.name().endsWith("_BUTTON") ||
+      material.name().endsWith("_SIGN") ||
+      material.name().endsWith("_MINECART") ||
+      material.name().endsWith("_COMMAND_BLOCK") ||
+      material.name().endsWith("_BOAT");
+  }
 }

@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -27,6 +28,7 @@ import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
 import org.jufyer.plugin.aquatic.commands.*;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
+import org.jufyer.plugin.aquatic.oyster.listener.FurnaceListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.OysterListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.PotionOfLuckListeners;
 import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
@@ -36,10 +38,12 @@ import org.jufyer.plugin.aquatic.spikyPiston.listeners.SpikyPistonListeners;
 import org.jufyer.plugin.aquatic.whale.entity.Whale;
 import org.jufyer.plugin.aquatic.whale.listeners.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.COOKED_OYSTER_KEY;
+import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.RAW_OYSTER_KEY;
 
 
 public final class Main extends JavaPlugin implements Listener {
@@ -76,6 +80,7 @@ public final class Main extends JavaPlugin implements Listener {
   public static final int CMDDeadOyster = 451525;
   public static final int CMDPearl = 165;
   public static final int CMDPotionOfLuck = 161515;
+  public static final int CMDCookedOyster = 3151525;
 
   public static Main getInstance() {
     return instance;
@@ -104,6 +109,7 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new SpikyPistonListeners(), this);
     Bukkit.getPluginManager().registerEvents(new OysterListeners(), this);
     Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new FurnaceListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);
@@ -150,6 +156,22 @@ public final class Main extends JavaPlugin implements Listener {
     getServer().addRecipe(SpikyPiston);
 
     addBrewingRecipe();
+
+    ItemStack raw_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta rawOysterItemMetameta = raw_oyster.getItemMeta();
+    rawOysterItemMetameta.setCustomModelData(CMDRawOyster);
+    rawOysterItemMetameta.setDisplayName("§rRaw Oyster");
+    rawOysterItemMetameta.getPersistentDataContainer().set(RAW_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
+    raw_oyster.setItemMeta(rawOysterItemMetameta);
+
+    ItemStack cooked_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta cookedOysterItemMeta = cooked_oyster.getItemMeta();
+    cookedOysterItemMeta.setCustomModelData(CMDCookedOyster);
+    cookedOysterItemMeta.setDisplayName("§rCooked Oyster");
+    cookedOysterItemMeta.getPersistentDataContainer().set(COOKED_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
+    cooked_oyster.setItemMeta(cookedOysterItemMeta);
+
+    getServer().addRecipe(new FurnaceRecipe(cooked_oyster, raw_oyster.getType()));
   }
 
   @Override
