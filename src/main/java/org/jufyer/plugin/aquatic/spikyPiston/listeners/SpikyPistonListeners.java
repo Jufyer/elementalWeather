@@ -182,48 +182,102 @@ public class SpikyPistonListeners implements Listener {
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(0, 0, -1);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(0, 0, -1);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 } else if (CustomModelData == Main.CMDSpikyPistonEast) {
                   meta.setCustomModelData(Main.CMDSpikyPistonExtendedEast);
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(1, 0, 0);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(1, 0, 0);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 } else if (CustomModelData == Main.CMDSpikyPistonSouth) {
                   meta.setCustomModelData(Main.CMDSpikyPistonExtendedSouth);
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(0, 0, 1);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(0, 0, 1);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 } else if (CustomModelData == Main.CMDSpikyPistonWest) {
                   meta.setCustomModelData(Main.CMDSpikyPistonExtendedWest);
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(-1, 0, 0);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(-1, 0, 0);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 } else if (CustomModelData == Main.CMDSpikyPistonUp) {
                   meta.setCustomModelData(Main.CMDSpikyPistonExtendedUp);
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(0, 1, 0);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(0, 1, 0);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 } else if (CustomModelData == Main.CMDSpikyPistonDown) {
                   meta.setCustomModelData(Main.CMDSpikyPistonExtendedDown);
 
                   Location blockToDestroy = adjacentBlock.getLocation().add(0, -1, 0);
                   if (blockToDestroy.getBlock() != null && blockToDestroy.getBlock() != BlockType.AIR){
-                    blockToDestroy.getBlock().setType(Material.AIR);
-                    blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                    if (blockToDestroy.getBlock().getType().getBlastResistance() <= 6){
+                      blockToDestroy.getBlock().getLocation().getWorld().dropItemNaturally(blockToDestroy.getBlock().getLocation(), new ItemStack(blockToDestroy.getBlock().getType()));
+                      blockToDestroy.getBlock().setType(Material.AIR);
+                    }else {
+                      Material blockType = blockToDestroy.getBlock().getType();
+                      Location loc = blockToDestroy.add(0, -1, 0);
+                      if (!loc.getBlock().getType().isBlock()) {
+                        blockToDestroy.getBlock().setType(Material.AIR);
+                        loc.getBlock().setType(blockType);
+                      }
+                    }
                   }
                 }
 
