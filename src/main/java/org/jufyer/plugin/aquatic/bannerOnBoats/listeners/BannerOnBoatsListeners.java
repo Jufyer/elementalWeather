@@ -1,5 +1,6 @@
 package org.jufyer.plugin.aquatic.bannerOnBoats.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.entity.CraftArmorStand;
 import org.bukkit.entity.*;
@@ -8,12 +9,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jufyer.plugin.aquatic.Main;
 
 public class BannerOnBoatsListeners implements Listener {
   public static final NamespacedKey BANNER_ARMORSTAND_KEY = new NamespacedKey(Main.getInstance(), "BANNER_ARMORSTAND");
   public static final NamespacedKey TEMPORARY_BANNER_ARMORSTAND_KEY = new NamespacedKey(Main.getInstance(), "TEMPORARY_BANNER_ARMORSTAND");
+
+  //TODO: Texturepack richtig machen oder ArmorStand anders machen damit der Banner auch bei Raid Captain richtig ist.
+  //TODO: Danach Goldfisch machen --> siehe X Post
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
@@ -24,6 +29,12 @@ public class BannerOnBoatsListeners implements Listener {
       if (player.getItemInHand().getType().name().endsWith("_BANNER")) {
         if (entity.getPassengers().toArray().length < 2) {
           ItemStack banner = player.getItemInHand();
+
+          if (banner.getType() == Material.WHITE_BANNER) {
+            ItemMeta bannerMeta = banner.getItemMeta();
+            bannerMeta.setCustomModelData(Main.CMDWhiteBoatBanner);
+            banner.setItemMeta(bannerMeta);
+          }
 
           ArmorStand as = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
           as.setCanMove(false);
@@ -84,6 +95,12 @@ public class BannerOnBoatsListeners implements Listener {
 
             ArmorStand bannerArmorStand = (CraftArmorStand) boat.getPassengers().getLast();
             ItemStack banner = bannerArmorStand.getHelmet();
+
+            if (banner.getType() == Material.WHITE_BANNER) {
+              ItemMeta bannerMeta = banner.getItemMeta();
+              bannerMeta.setCustomModelData(Main.CMDWhiteBoatBanner);
+              banner.setItemMeta(bannerMeta);
+            }
 
             ArmorStand as = (ArmorStand) boat.getWorld().spawnEntity(boat.getLocation(), EntityType.ARMOR_STAND);
             as.setCanMove(false);
