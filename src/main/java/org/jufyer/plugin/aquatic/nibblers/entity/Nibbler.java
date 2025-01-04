@@ -37,7 +37,7 @@ public class Nibbler extends Cod {
 
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
     this.getBukkitEntity().getPersistentDataContainer().set(NIBBLER_KEY, PersistentDataType.BOOLEAN, true);
-    this.setInvulnerable(true);
+    this.setInvulnerable(false);
     this.setCustomName(Component.nullToEmpty("Nibbler"));
     this.setCustomNameVisible(false);
 
