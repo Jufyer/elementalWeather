@@ -47,6 +47,7 @@ import java.util.Map;
 import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.COOKED_OYSTER_KEY;
 import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.RAW_OYSTER_KEY;
 
+//TODO: Nibbler angriff "besser" machen, so das es richtig funktioniert und er nicht in der Luft rumfliegt etc.
 
 public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
