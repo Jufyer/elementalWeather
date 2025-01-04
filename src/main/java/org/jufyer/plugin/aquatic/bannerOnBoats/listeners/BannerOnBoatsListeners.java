@@ -17,9 +17,6 @@ public class BannerOnBoatsListeners implements Listener {
   public static final NamespacedKey BANNER_ARMORSTAND_KEY = new NamespacedKey(Main.getInstance(), "BANNER_ARMORSTAND");
   public static final NamespacedKey TEMPORARY_BANNER_ARMORSTAND_KEY = new NamespacedKey(Main.getInstance(), "TEMPORARY_BANNER_ARMORSTAND");
 
-  //TODO: Texturepack richtig machen oder ArmorStand anders machen damit der Banner auch bei Raid Captain richtig ist.
-  //TODO: Danach Goldfisch machen --> siehe X Post
-
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
     Player player = event.getPlayer();
