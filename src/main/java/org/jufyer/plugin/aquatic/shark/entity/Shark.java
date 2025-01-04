@@ -53,16 +53,6 @@ public class Shark extends Dolphin{
   }
 
   @Override
-  public int getMoistnessLevel() {
-    return 0;
-  }
-
-  @Override
-  public void setMoisntessLevel(int moistness) {
-
-  }
-
-  @Override
   protected void registerGoals() {
     this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
     this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));

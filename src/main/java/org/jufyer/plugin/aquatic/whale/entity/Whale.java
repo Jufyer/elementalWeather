@@ -56,7 +56,7 @@ public class Whale extends Dolphin {
 
   @Override
   public int getMoistnessLevel() {
-    return 0;
+    return 1000;
   }
 
   @Override
