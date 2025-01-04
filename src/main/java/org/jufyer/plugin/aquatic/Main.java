@@ -86,6 +86,8 @@ public final class Main extends JavaPlugin implements Listener {
 
   public static final int CMDWhiteBoatBanner = 23821521;
 
+  public static final int CMDGoldfishBucket = 715221;
+
   public static Main getInstance() {
     return instance;
   }
