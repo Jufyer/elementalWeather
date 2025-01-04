@@ -29,7 +29,7 @@ public class Shark extends Dolphin{
 
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
     this.getBukkitEntity().getPersistentDataContainer().set(SHARK_KEY, PersistentDataType.BOOLEAN, true);
-    this.setInvulnerable(true);
+    this.setInvulnerable(false);
     this.setCustomName(Component.nullToEmpty("shark"));
     this.setCustomNameVisible(false);
 

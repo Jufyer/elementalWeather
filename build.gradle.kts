@@ -51,5 +51,6 @@ bukkitPluginYaml {
     register("spawnNibbler")
     register("spawnShark")
     register("spawnOyster")
+    register("spawnGoldfish")
   }
 }

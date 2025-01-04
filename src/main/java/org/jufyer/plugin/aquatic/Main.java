@@ -28,6 +28,7 @@ import org.jufyer.plugin.aquatic.bannerOnBoats.listeners.BannerOnBoatsListeners;
 import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
 import org.jufyer.plugin.aquatic.commands.*;
+import org.jufyer.plugin.aquatic.goldfish.listeners.GoldfishListeners;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.FurnaceListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.OysterListeners;
@@ -99,6 +100,7 @@ public final class Main extends JavaPlugin implements Listener {
     getCommand("spawnNibbler").setExecutor(new SpawnNibbler());
     getCommand("spawnShark").setExecutor(new SpawnShark());
     getCommand("spawnOyster").setExecutor(new SpawnOyster());
+    getCommand("spawnGoldfish").setExecutor(new SpawnGoldfish());
 
     Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
     Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);
@@ -114,6 +116,7 @@ public final class Main extends JavaPlugin implements Listener {
     Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
     Bukkit.getPluginManager().registerEvents(new FurnaceListeners(), this);
     Bukkit.getPluginManager().registerEvents(new BannerOnBoatsListeners(), this);
+    Bukkit.getPluginManager().registerEvents(new GoldfishListeners(), this);
 
     //Custom Recipe:
     ItemStack Barnacles = new ItemStack(Material.NAUTILUS_SHELL);

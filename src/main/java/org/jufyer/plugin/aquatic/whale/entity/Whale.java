@@ -28,7 +28,7 @@ public class Whale extends Dolphin {
 
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
     this.getBukkitEntity().getPersistentDataContainer().set(WHALE_KEY, PersistentDataType.BOOLEAN, true);
-    this.setInvulnerable(true);
+    this.setInvulnerable(false);
     this.setCustomName(Component.nullToEmpty("with"));
     this.setCustomNameVisible(false);
 
