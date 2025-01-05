@@ -1,7 +1,6 @@
 package org.jufyer.plugin.aquatic.bannerOnBoats.listeners;
 
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.entity.CraftArmorStand;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -23,43 +22,69 @@ public class BannerOnBoatsListeners implements Listener {
     Entity entity = event.getRightClicked();
 
     if (entity instanceof Boat) {
-      if (player.getItemInHand().getType().name().endsWith("_BANNER")) {
-        if (entity.getPassengers().toArray().length < 2) {
-          ItemStack banner = player.getItemInHand();
+      if (player.isSneaking()) {
+        if (player.getItemInHand().getType().name().endsWith("_BANNER")) {
+          if (entity.getPassengers().toArray().length < 2) {
+            ItemStack banner = player.getItemInHand();
 
-          if (banner.getType() == Material.WHITE_BANNER) {
-            ItemMeta bannerMeta = banner.getItemMeta();
-            bannerMeta.setCustomModelData(Main.CMDWhiteBoatBanner);
-            banner.setItemMeta(bannerMeta);
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+              if (player.getGameMode() != GameMode.CREATIVE){
+                player.getItemInHand().setAmount(player.getItemInHand().getAmount() -1);
+              }
+            }, 1);
+
+            if (banner.getType() == Material.WHITE_BANNER) {
+              ItemMeta bannerMeta = banner.getItemMeta();
+              bannerMeta.setCustomModelData(Main.CMDWhiteBoatBanner);
+              banner.setItemMeta(bannerMeta);
+            }
+
+            ArmorStand as = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
+            as.setCanMove(false);
+            as.setVisible(false);
+            as.setGravity(false);
+            as.setBasePlate(false);
+            as.setArms(false);
+            as.setPersistent(true);
+
+            as.setHelmet(banner);
+
+            ItemStack helmet = as.getHelmet();
+            helmet.setAmount(1);
+            as.setHelmet(helmet);
+
+            as.getPersistentDataContainer().set(BANNER_ARMORSTAND_KEY, PersistentDataType.BYTE, (byte) 1);
+
+            ArmorStand tempAs = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
+            tempAs.setCanMove(false);
+            tempAs.setVisible(false);
+            tempAs.setGravity(false);
+            tempAs.setBasePlate(false);
+            tempAs.setArms(false);
+            tempAs.setPersistent(true);
+
+            tempAs.getPersistentDataContainer().set(TEMPORARY_BANNER_ARMORSTAND_KEY, PersistentDataType.BYTE, (byte) 1);
+
+            entity.addPassenger(tempAs);
+            entity.addPassenger(as);
+
+            tempAs.setRotation(entity.getYaw(), entity.getPitch());
+            as.setRotation(entity.getYaw(), entity.getPitch());
           }
+        } else if (!entity.getPassengers().isEmpty()) {
+          if (entity.getPassengers().get(0) instanceof ArmorStand) {
+            Entity passenger = entity.getPassengers().get(0);
+            if (passenger.getPersistentDataContainer().has(TEMPORARY_BANNER_ARMORSTAND_KEY, PersistentDataType.BYTE)) {
+              passenger.remove();
+              ArmorStand as = (ArmorStand) entity.getPassengers().getLast();
+              ItemStack item = as.getHelmet();
+              as.setHelmet(new ItemStack(Material.AIR));
+              Location loc = as.getLocation();
 
-          ArmorStand as = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
-          as.setCanMove(false);
-          as.setVisible(false);
-          as.setGravity(false);
-          as.setBasePlate(false);
-          as.setArms(false);
-          as.setPersistent(true);
-
-          as.setHelmet(banner);
-
-          as.getPersistentDataContainer().set(BANNER_ARMORSTAND_KEY, PersistentDataType.BYTE, (byte) 1);
-
-          ArmorStand tempAs = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
-          tempAs.setCanMove(false);
-          tempAs.setVisible(false);
-          tempAs.setGravity(false);
-          tempAs.setBasePlate(false);
-          tempAs.setArms(false);
-          tempAs.setPersistent(true);
-
-          tempAs.getPersistentDataContainer().set(TEMPORARY_BANNER_ARMORSTAND_KEY, PersistentDataType.BYTE, (byte) 1);
-
-          entity.addPassenger(tempAs);
-          entity.addPassenger(as);
-
-          tempAs.setRotation(entity.getYaw(), entity.getPitch());
-          as.setRotation(entity.getYaw(), entity.getPitch());
+              entity.getPassengers().getLast().remove();
+              loc.getWorld().dropItemNaturally(loc, item);
+            }
+          }
         }
       } else if (!entity.getPassengers().isEmpty()) {
         if (entity.getPassengers().get(0) instanceof ArmorStand) {

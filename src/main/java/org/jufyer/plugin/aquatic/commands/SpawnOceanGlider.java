@@ -17,7 +17,7 @@ public class SpawnOceanGlider implements CommandExecutor {
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
     Player player = (Player) sender;
     if (player.isOp()){
-      ArmorStand armorStand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.ARMOR_STAND);
+      ArmorStand armorStand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, 0, 0), EntityType.ARMOR_STAND);
       armorStand.setCustomName("OceanGlider");
       armorStand.setPersistent(true);
       armorStand.setCanMove(false);
