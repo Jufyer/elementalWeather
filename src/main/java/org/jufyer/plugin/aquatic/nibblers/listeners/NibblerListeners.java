@@ -144,27 +144,27 @@ public class NibblerListeners implements Listener {
           break;
         }
       }
-    } else if (entity.getName().equals("Nibbler")  && entity.getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)) {
-      List<Entity> nearbyEntities = entity.getNearbyEntities(20, 20, 20);
-      for (Entity player : nearbyEntities) {
-        if (player instanceof Player){
-          Location loc = player.getLocation();
-          moveEntityTowards(player, loc);
-
-          long currentTime = System.currentTimeMillis();
-          long lastHitTime = lastHitTimes.getOrDefault(player, 0L);
-
-          if (currentTime - lastHitTime >= HIT_COOLDOWN_TIME) {
-            lastPlacedBlockTimes.put((Player) player, currentTime);
-            List<Entity> nearbyEntities2 = entity.getNearbyEntities(0.5, 0.5, 0.5);
-            for (Entity otherEntity : nearbyEntities2) {
-              ((Player) player).damage(3);
-              moveEntityTowards(otherEntity, player.getLocation());
-            }
-          }
-        }
-      }
-    }
+    } //else if (entity.getName().equals("Nibbler")  && entity.getPersistentDataContainer().getKeys().contains(Nibbler.NIBBLER_KEY)) {
+//      List<Entity> nearbyEntities = entity.getNearbyEntities(20, 20, 20);
+//      for (Entity player : nearbyEntities) {
+//        if (player instanceof Player){
+//          Location loc = player.getLocation();
+//          moveEntityTowards(player, loc);
+//
+//          long currentTime = System.currentTimeMillis();
+//          long lastHitTime = lastHitTimes.getOrDefault(player, 0L);
+//
+//          if (currentTime - lastHitTime >= HIT_COOLDOWN_TIME) {
+//            lastPlacedBlockTimes.put((Player) player, currentTime);
+//            List<Entity> nearbyEntities2 = entity.getNearbyEntities(0.5, 0.5, 0.5);
+//            for (Entity otherEntity : nearbyEntities2) {
+//              ((Player) player).damage(3);
+//              moveEntityTowards(otherEntity, player.getLocation());
+//            }
+//          }
+//        }
+//      }
+//    }
   }
 
   @EventHandler
