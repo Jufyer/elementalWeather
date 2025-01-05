@@ -182,9 +182,22 @@ public class OysterListeners implements Listener {
     if (consumedItem.hasItemMeta() &&
       consumedItem.getItemMeta().getPersistentDataContainer().has(RAW_OYSTER_KEY, PersistentDataType.BYTE)) {
 
-      event.getPlayer().setFoodLevel(event.getPlayer().getFoodLevel() + 2);
-      event.getPlayer().setSaturation(event.getPlayer().getSaturation() + 2.0f);
+      event.getPlayer().setFoodLevel(event.getPlayer().getFoodLevel() + 1);
+      event.getPlayer().setSaturation(event.getPlayer().getSaturation() + 1.0f);
       event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 200, 3));
+
+      event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), "entity.player.burp", 1.0f, 1.0f);
+    }
+  }
+
+  @EventHandler
+  public void onPlayerConsumeCookedOyster(PlayerItemConsumeEvent event) {
+    ItemStack consumedItem = event.getItem();
+    if (consumedItem.hasItemMeta() &&
+      consumedItem.getItemMeta().getPersistentDataContainer().has(COOKED_OYSTER_KEY, PersistentDataType.BYTE)) {
+
+      event.getPlayer().setFoodLevel(event.getPlayer().getFoodLevel() + 5);
+      event.getPlayer().setSaturation(event.getPlayer().getSaturation() + 5.0f);
 
       event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), "entity.player.burp", 1.0f, 1.0f);
     }
@@ -226,6 +239,21 @@ public class OysterListeners implements Listener {
           event.setCancelled(true);
         }
 
+    }else if (hand.hasItemMeta() && hand.getItemMeta().hasCustomModelData() && hand.getItemMeta().getCustomModelData() == CMDCookedOyster) {
+      long currentTime = System.currentTimeMillis();
+
+      long lastPlacedTime = lastEatenTimes.getOrDefault(player, 0L);
+
+      if (currentTime - lastPlacedTime >= COOLDOWN_TIME) {
+        onPlayerConsumeCookedOyster(new PlayerItemConsumeEvent(player, hand, event.getHand()));
+        if (player.getGameMode().equals(GameMode.CREATIVE)){
+          return;
+        }
+        hand.setAmount(hand.getAmount() -1);
+
+      }else {
+        event.setCancelled(true);
+      }
     }
   }
 
