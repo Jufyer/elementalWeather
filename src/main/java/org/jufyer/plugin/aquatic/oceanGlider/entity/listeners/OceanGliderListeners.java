@@ -1,5 +1,6 @@
 package org.jufyer.plugin.aquatic.oceanGlider.entity.listeners;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -34,6 +35,17 @@ public class OceanGliderListeners implements Listener {
   private Map<ArmorStand, Double> DistanceFromArmorStand = new HashMap<>();
 
   @EventHandler
+  public void onPlayerJump(PlayerJumpEvent event) {
+    Player player = event.getPlayer();
+    if (ridingPlayers.contains(player)){
+      if (areAllowedToFly.contains(player)) {
+        return;
+      }
+      player.setAllowFlight(false);
+    }
+  }
+
+  @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
     if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND)) {
       ArmorStand as = (ArmorStand) event.getRightClicked();
@@ -65,7 +77,7 @@ public class OceanGliderListeners implements Listener {
 
           player.addPassenger(as);
 
-          if (!(areAllowedToFly.contains(event.getPlayer()))) {
+          if (!(areAllowedToFly.contains(event.getPlayer())) && player.getAllowFlight()) {
             areAllowedToFly.add(event.getPlayer());
           }
           ridingPlayers.add(event.getPlayer());
@@ -112,7 +124,6 @@ public class OceanGliderListeners implements Listener {
     Player player = event.getPlayer();
     if (ridingPlayers.contains(player)) {
       if (player.isFlying()) {
-
         double previousY = event.getFrom().getY();
         double currentY = event.getTo().getY();
 
@@ -173,15 +184,20 @@ public class OceanGliderListeners implements Listener {
       }
 
       double distance = event.getFrom().distance(event.getTo());
-      double currentDistance = DistanceFromArmorStand.get(as);
+      double currentDistance;
+      if (DistanceFromArmorStand.get(as) != null){
+        currentDistance = DistanceFromArmorStand.get(as);
+      }else {
+        currentDistance = 0;
+      }
 
       if (currentDistance >= 300) {
         as.remove();
         if (ridingPlayers.contains(player) && playerArmorStandMap.containsKey(player)) {
+          player.setFlying(false);
           if (!(player.isOp())){
             player.setAllowFlight(false);
           }
-          player.setFlying(false);
           player.setFlySpeed(0.1f);
           player.setGravity(true);
 
@@ -222,11 +238,10 @@ public class OceanGliderListeners implements Listener {
 
     if (ridingPlayers.contains(player) && playerArmorStandMap.containsKey(player)) {
       ArmorStand as = playerArmorStandMap.get(player);
-
+      player.setFlying(false);
       if (!(player.isOp())){
         player.setAllowFlight(false);
       }
-      player.setFlying(false);
       player.setFlySpeed(0.1f);
       player.setGravity(true);
 
@@ -300,7 +315,6 @@ public class OceanGliderListeners implements Listener {
       }
     }
   }
-
 
   public void spawnOceanGlider(Location location, float yaw, float pitch) {
     ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 2, 0), EntityType.ARMOR_STAND);

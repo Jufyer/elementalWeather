@@ -47,8 +47,6 @@ import java.util.Map;
 import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.COOKED_OYSTER_KEY;
 import static org.jufyer.plugin.aquatic.oyster.listener.OysterListeners.RAW_OYSTER_KEY;
 
-//TODO: Ocean Glider Fixen
-
 public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
   public static BrewingControler bc;
@@ -164,6 +162,21 @@ public final class Main extends JavaPlugin implements Listener {
     SpikyPiston.setIngredient('P', Material.PISTON);
 
     getServer().addRecipe(SpikyPiston);
+
+    ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+    ItemMeta OceanGlidermeta = oceanGlider.getItemMeta();
+    OceanGlidermeta.setCustomModelData(Main.CMDOceanGlider);
+    OceanGlidermeta.setDisplayName("§rOcean Glider");
+    oceanGlider.setItemMeta(OceanGlidermeta);
+
+    ShapedRecipe OceanGlider = new ShapedRecipe(oceanGlider);
+    OceanGlider.shape("N N", "PPP", "NHN");
+
+    OceanGlider.setIngredient('N', Material.NAUTILUS_SHELL);
+    OceanGlider.setIngredient('P', Material.PRISMARINE_SHARD);
+    OceanGlider.setIngredient('H', Material.HEART_OF_THE_SEA);
+
+    getServer().addRecipe(OceanGlider);
 
     addBrewingRecipe();
 
