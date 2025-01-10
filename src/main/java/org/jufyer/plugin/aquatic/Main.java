@@ -27,7 +27,6 @@ import org.bukkit.potion.PotionType;
 import org.jufyer.plugin.aquatic.bannerOnBoats.listeners.BannerOnBoatsListeners;
 import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
-import org.jufyer.plugin.aquatic.commands.*;
 import org.jufyer.plugin.aquatic.goldfish.listeners.GoldfishListeners;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.FurnaceListeners;
@@ -94,14 +93,6 @@ public final class Main extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     instance = this;
-
-    getCommand("spawnOceanGlider").setExecutor(new SpawnOceanGlider());
-    getCommand("giveOceanGlider").setExecutor(new GiveOceanGlider());
-    getCommand("spawnWhale").setExecutor(this);
-    getCommand("spawnNibbler").setExecutor(new SpawnNibbler());
-    getCommand("spawnShark").setExecutor(new SpawnShark());
-    getCommand("spawnOyster").setExecutor(new SpawnOyster());
-    getCommand("spawnGoldfish").setExecutor(new SpawnGoldfish());
 
     Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
     Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);

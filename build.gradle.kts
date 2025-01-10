@@ -45,12 +45,6 @@ bukkitPluginYaml {
   authors.add("Jufyer")
   apiVersion = "1.21.4"
   commands {
-    register("spawnOceanGlider")
-    register("giveOceanGlider")
-    register("spawnWhale")
-    register("spawnNibbler")
-    register("spawnShark")
-    register("spawnOyster")
-    register("spawnGoldfish")
+
   }
 }
