@@ -14,7 +14,7 @@ You can download the latest release [`here`](https://github.com/Jufyer/aquaticPl
 ## Showcase
 
 ### Whale
-<p align="center"><img src="https://imgur.com/ejMg24q.jpg"></p>
+<p align="center"><img src="https://imgur.com/jPKdZ6k.png"></p>
 A majestic whale added to the game.
 
 ### Loot
@@ -37,6 +37,76 @@ Here is the crafting recipe:
 
 If activated with redstone and a player steps on it, it deals damage to the player. It looks like this:
 <p align="center"><img src="https://i.imgur.com/sROAkXL.png"></p>
+
+### Ocean Glider
+
+<p align="center"><img src="https://imgur.com/tIrckS4.png"></p>
+The Ocean Glider wich allows the Player to travel 300 Blocks very fast on water.
+
+Here you can see the player using the Ocean Glider:
+<p align="center"><img src="https://imgur.com/OHZxyfr.png"></p>
+
+To craft the Ocean Glider you need to use following Recipie:
+<p align="center"><img src="https://imgur.com/DIbG9Jn.png"></p>
+
+### Nibbler and Prismarine Ocean Ruin
+
+The Nibbler is an aggressive mob wich spawns near the new Structure: "Prismarine Ocean Ruin". You can see this in the following image:
+<p align="center"><img src="https://imgur.com/bUSEL41.png"></p>
+
+You can also breed the Nibbler by using Dried Kelp. It looks like this: 
+<p align="center"><img src="https://imgur.com/hRDFGTK.gif"></p>
+
+If you kill the Nibbler it drops a Prismarine Shard.
+
+### Shark
+
+The Shark is a new Passive mob wich passively drops Shark Tooth. You can see this here:
+<p align="center"><img src="https://imgur.com/nVQubAE.png"></p>
+
+With 5 Shark Teeth you are able to craft a "Spiky Piston" like that:
+<p align="center"><img src="https://imgur.com/IgtXBLJ.png"></p>
+
+It breaks Blocks with a blast resistance <= 6. You can see this here:
+<p align="center"><img src="https://imgur.com/1bL7BIr.gif"></p>
+
+<p align="center"><img src="https://imgur.com/jEg0JJF.gif"></p>
+
+## Oyster
+
+The Oyster is a new Block. But this block cant be broken so you cant get the Block. There a two variants:
+- Without a Pearl: 
+  - <p align="center"><img src="https://imgur.com/PT4vd79.png"></p>
+- And with a Pearl: 
+  - <p align="center"><img src="https://imgur.com/mXMZKrQ.png"></p>
+  
+If you shear an oyster it always drops a raw oyster. And if the oyster has a pearl it also drops it. It will look something like this:
+<p align="center"><img src="https://imgur.com/OqYtza8.png"></p>
+
+If you eat the Oyster raw you will get nausea but if you cook it you will get a good food source. You can cook it in the furnace like any other food like this:
+<p align="center"><img src="https://imgur.com/hfGTeuA.png"></p>
+
+And if you get the Pearl you can brew a potion of Luck with it. You can to it like that: 
+
+<p align="center"><img src="https://imgur.com/J8uSfb3.png"></p>
+
+<p align="center"><img src="https://imgur.com/oBtmt64.png"></p>
+
+<p align="center"><img src="https://imgur.com/w28EmwU.png"></p>
+  
+## Boat Banners
+
+If you shift-right-click a boat with a banner in your hand you can place the banner in the boat. It will look like this: 
+
+<p align="center"><img src="https://imgur.com/xUyvEmg.png"></p>
+
+But if you do that there can only be one Player in the boat. So it basically takes up one place in the boat. You can also get the banner by back shift-right-clicking again. 
+
+## Goldfish
+
+The Goldfish is a new mob without any functionality. It is just there for the looks and spawns together with tropical fish. You can see it here: 
+
+<p align="center"><img src="https://imgur.com/bmBvdJc.png"></p>
 
 ## Contributing
 
