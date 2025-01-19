@@ -103,13 +103,29 @@ public final class Main extends JavaPlugin implements Listener {
     instance = this;
     createCustomConfig();
 
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Banners on boats")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Goldfishes")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Nibblers")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Ocean Glider")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Oysters")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Sharks")));
-    getLogger().info(String.valueOf(getCustomConfig().getBoolean("Whales")));
+    getLogger().info("The following features are enabled: ");
+
+    if (getCustomConfig().getBoolean("Banners on boats")){
+      getLogger().info("Banners on boats");
+    }
+    if (getCustomConfig().getBoolean("Goldfishes")){
+      getLogger().info("Goldfishes");
+    }
+    if (getCustomConfig().getBoolean("Nibblers")){
+      getLogger().info("Nibblers");
+    }
+    if (getCustomConfig().getBoolean("Ocean Glider")){
+      getLogger().info("Ocean Glider");
+    }
+    if (getCustomConfig().getBoolean("Oysters")){
+      getLogger().info("Oysters");
+    }
+    if (getCustomConfig().getBoolean("Sharks")){
+      getLogger().info("Sharks");
+    }
+    if (getCustomConfig().getBoolean("Whales")){
+      getLogger().info("Whales");
+    }
 
     if (getCustomConfig().getBoolean("Whales")){
       Bukkit.getPluginManager().registerEvents(new WhaleListeners(), this);
