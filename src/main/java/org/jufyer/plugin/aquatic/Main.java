@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionType;
 import org.jufyer.plugin.aquatic.bannerOnBoats.listeners.BannerOnBoatsListeners;
 import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
+import org.jufyer.plugin.aquatic.debug.commands.spawnShark;
 import org.jufyer.plugin.aquatic.goldfish.listeners.GoldfishListeners;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.FurnaceListeners;
@@ -101,6 +102,7 @@ public final class Main extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     instance = this;
+    saveDefaultConfig();
     createCustomConfig();
 
     getLogger().info("The following features are enabled: ");
@@ -126,6 +128,11 @@ public final class Main extends JavaPlugin implements Listener {
     if (getCustomConfig().getBoolean("Whales")){
       getLogger().info("Whales");
     }
+    if (getCustomConfig().getBoolean("Debug")){
+      getLogger().info("Debug mode on!");
+      getCommand("spawnShark").setExecutor(new spawnShark());
+    }
+
 
     if (getCustomConfig().getBoolean("Whales")){
       Bukkit.getPluginManager().registerEvents(new WhaleListeners(), this);
@@ -342,9 +349,9 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   private void createCustomConfig() {
-    customConfigFile = new File(getDataFolder(), "custom.yml");
+    customConfigFile = new File(getDataFolder(), "config.yml");
     if (!customConfigFile.exists()) {
-      getDataFolder().mkdirs(); // Ordner erstellen
+      getDataFolder().mkdirs();
       try {
         customConfigFile.createNewFile();
       } catch (IOException e) {
@@ -356,7 +363,6 @@ public final class Main extends JavaPlugin implements Listener {
     try {
       customConfig.load(customConfigFile);
 
-      // Standardwerte hinzufügen
       customConfig.options().copyDefaults(true);
       customConfig.addDefault("Banners on boats", true);
       customConfig.addDefault("Goldfishes", true);
@@ -365,8 +371,8 @@ public final class Main extends JavaPlugin implements Listener {
       customConfig.addDefault("Oysters", true);
       customConfig.addDefault("Sharks", true);
       customConfig.addDefault("Whales", true);
+      customConfig.addDefault("Debug", false);
 
-      // Konfiguration speichern
       customConfig.save(customConfigFile);
     } catch (IOException | InvalidConfigurationException e) {
       e.printStackTrace();
