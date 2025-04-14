@@ -30,6 +30,8 @@ import org.bukkit.potion.PotionType;
 import org.jufyer.plugin.aquatic.bannerOnBoats.listeners.BannerOnBoatsListeners;
 import org.jufyer.plugin.aquatic.brewing.BrewingControler;
 import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
+import org.jufyer.plugin.aquatic.debug.commands.spawnGoldfish;
+import org.jufyer.plugin.aquatic.debug.commands.spawnNibbler;
 import org.jufyer.plugin.aquatic.debug.commands.spawnShark;
 import org.jufyer.plugin.aquatic.goldfish.listeners.GoldfishListeners;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
@@ -231,6 +233,8 @@ public final class Main extends JavaPlugin implements Listener {
     if (getCustomConfig().getBoolean("Debug")){
       getLogger().info("Debug mode on!");
       getCommand("spawnShark").setExecutor(new spawnShark());
+      getCommand("spawnNibbler").setExecutor(new spawnNibbler());
+      getCommand("spawnGoldfish").setExecutor(new spawnGoldfish());
     }
   }
 

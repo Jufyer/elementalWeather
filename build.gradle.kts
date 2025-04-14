@@ -46,5 +46,7 @@ bukkitPluginYaml {
   apiVersion = "1.21.4"
   commands {
     register("spawnShark")
+    register("spawnNibbler")
+    register("spawnGoldfish")
   }
 }
