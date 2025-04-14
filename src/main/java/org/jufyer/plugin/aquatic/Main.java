@@ -33,6 +33,7 @@ import org.jufyer.plugin.aquatic.brewing.BrewingRecipe;
 import org.jufyer.plugin.aquatic.debug.commands.spawnGoldfish;
 import org.jufyer.plugin.aquatic.debug.commands.spawnNibbler;
 import org.jufyer.plugin.aquatic.debug.commands.spawnShark;
+import org.jufyer.plugin.aquatic.debug.commands.spawnWhale;
 import org.jufyer.plugin.aquatic.goldfish.listeners.GoldfishListeners;
 import org.jufyer.plugin.aquatic.nibblers.listeners.NibblerListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.FurnaceListeners;
@@ -235,6 +236,7 @@ public final class Main extends JavaPlugin implements Listener {
       getCommand("spawnShark").setExecutor(new spawnShark());
       getCommand("spawnNibbler").setExecutor(new spawnNibbler());
       getCommand("spawnGoldfish").setExecutor(new spawnGoldfish());
+      getCommand("spawnWhale").setExecutor(new spawnWhale());
     }
   }
 

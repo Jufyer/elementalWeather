@@ -5,9 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jufyer.plugin.aquatic.nibblers.entity.Nibbler;
+import org.jufyer.plugin.aquatic.whale.entity.Whale;
 
-public class spawnNibbler implements CommandExecutor {
+public class spawnWhale implements CommandExecutor {
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
     if (sender.isOp()){
@@ -17,10 +17,9 @@ public class spawnNibbler implements CommandExecutor {
       }
 
       Player player = (Player) sender;
-      new Nibbler(player.getLocation());
-      player.sendMessage("Nibbler spawned!");
+      new Whale(player.getLocation());
+      player.sendMessage("Whale spawned!");
     }
-
     return false;
   }
 }
