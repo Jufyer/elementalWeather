@@ -239,19 +239,6 @@ public final class Main extends JavaPlugin implements Listener {
 
   }
 
-  @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    Player player = (Player) sender;
-    boolean isOP = player.isOp();
-
-    if (isOP){
-      new Shark(player.getLocation());
-    }
-    //saveBlockData(player);
-
-    return false;
-  }
-
   private void saveBlockData(Player player) {
     Map<String, String> blockData = new HashMap<>();
     List<Material> targetMaterials = List.of(
