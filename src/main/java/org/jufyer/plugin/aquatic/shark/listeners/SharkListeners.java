@@ -3,7 +3,8 @@ package org.jufyer.plugin.aquatic.shark.listeners;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Dolphin;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -14,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jufyer.plugin.aquatic.Main;
 import org.jufyer.plugin.aquatic.shark.entity.Shark;
-import org.jufyer.plugin.aquatic.whale.entity.Whale;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class SharkListeners implements Listener {
   @EventHandler
   public void onEntityMove(EntityMoveEvent event) {
     Entity entity = event.getEntity();
-    if (entity.getName().equals("shark") && entity.getType() == EntityType.DOLPHIN && entity.getPersistentDataContainer().getKeys().contains(Shark.SHARK_KEY)){
+    if (entity.getName().equals("shark") && entity.getType() == EntityType.DOLPHIN && entity.getPersistentDataContainer().getKeys().contains(SHARK_KEY)){
       double distance = event.getFrom().distance(event.getTo());
       if (TravelledDistanceOfShark.get(entity) == null){
         TravelledDistanceOfShark.put(entity, 0.0);
@@ -58,7 +58,7 @@ public class SharkListeners implements Listener {
 
   @EventHandler
   public void onEntityPickupItem(EntityPickupItemEvent event) {
-    if (event.getEntity().getPersistentDataContainer().has(Shark.SHARK_KEY)) {
+    if (event.getEntity().getPersistentDataContainer().has(SHARK_KEY)) {
       event.setCancelled(true);
     }
   }

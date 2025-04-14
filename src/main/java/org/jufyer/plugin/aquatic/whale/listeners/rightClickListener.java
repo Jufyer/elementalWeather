@@ -25,7 +25,7 @@ public class rightClickListener implements Listener {
 
   @EventHandler
   public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-    if (event.getPlayer().getActiveItem() != null && event.getRightClicked().getName().equals("with") && event.getRightClicked().getPersistentDataContainer().getKeys().contains(Whale.WHALE_KEY)) {
+    if (event.getPlayer().getActiveItem() != null && event.getRightClicked().getName().equals("with") && event.getRightClicked().getPersistentDataContainer().getKeys().contains(Whale.DOLPHIN_WHALE_KEY)) {
       if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SHEARS) {
         event.getRightClicked().setCustomName("out");
 

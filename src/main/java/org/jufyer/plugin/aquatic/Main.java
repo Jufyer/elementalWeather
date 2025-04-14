@@ -38,6 +38,7 @@ import org.jufyer.plugin.aquatic.oyster.listener.OysterListeners;
 import org.jufyer.plugin.aquatic.oyster.listener.PotionOfLuckListeners;
 import org.jufyer.plugin.aquatic.prismarineOceanRuin.GeneratePrismarineOceanRuin;
 import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListeners;
+import org.jufyer.plugin.aquatic.shark.entity.Shark;
 import org.jufyer.plugin.aquatic.shark.listeners.SharkListeners;
 import org.jufyer.plugin.aquatic.spikyPiston.listeners.SpikyPistonListeners;
 import org.jufyer.plugin.aquatic.whale.entity.Whale;
@@ -59,14 +60,17 @@ public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
   public static BrewingControler bc;
 
+  public static final int CMDWhale = 238;
   public static final int CMDBarnacle = 21;
   public static final int CMDBarnacleSpike = 219;
   public static final int CMDBarnacleSpikeExtended = 2195;
+
   public static final int CMDOceanGlider = 157;
   public static final int CMDOceanGliderEntity = 1575;
-  public static final int CMDNibblerBucket = 149221;
-  public static final int CMDSharkTooth = 1982015;
 
+  public static final int CMDNibblerBucket = 149221;
+
+  public static final int CMDSharkTooth = 1982015;
   public static final int CMDSpikyPistonItem = 191619;
 
   public static final int CMDSpikyPistonNorth = 191641;
@@ -258,7 +262,7 @@ public final class Main extends JavaPlugin implements Listener {
     boolean isOP = player.isOp();
 
     if (isOP){
-      new Whale(player.getLocation());
+      new Shark(player.getLocation());
     }
     //saveBlockData(player);
 

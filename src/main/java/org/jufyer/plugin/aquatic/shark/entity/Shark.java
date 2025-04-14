@@ -7,35 +7,47 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jufyer.plugin.aquatic.Main;
 
-public class Shark extends Dolphin{
+public class Shark extends net.minecraft.world.entity.animal.Dolphin {
+
   public static final NamespacedKey SHARK_KEY = new NamespacedKey(Main.getInstance(), "SHARK");
+  public static final NamespacedKey DOLPHIN_SHARK_KEY = new NamespacedKey(Main.getInstance(), "DOLPHIN_SHARK");
+
+  private ArmorStand armorStand;
 
   public Shark(Location loc) {
-
     super(EntityType.DOLPHIN, ((CraftWorld) loc.getWorld()).getHandle());
 
+    /*this.armorStand = loc.getWorld().spawn(loc, ArmorStand.class, as -> {
+      as.getPersistentDataContainer().set(SHARK_KEY, PersistentDataType.BOOLEAN, true);
+      as.setInvulnerable(true);
+      as.setPersistent(true);
+      as.setVisible(false);
+      as.setHelmet(new ItemStack(Material.DIAMOND));
+    });*/
 
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
-    this.getBukkitEntity().getPersistentDataContainer().set(SHARK_KEY, PersistentDataType.BOOLEAN, true);
-    this.setInvulnerable(false);
+    this.getBukkitEntity().getPersistentDataContainer().set(DOLPHIN_SHARK_KEY, PersistentDataType.BOOLEAN, true);
     this.setCustomName(Component.nullToEmpty("shark"));
     this.setCustomNameVisible(false);
-
-    this.persist = true;
+    this.setInvulnerable(false);
+    this.setInvisible(true);
 
     ((CraftWorld) loc.getWorld()).getHandle().addFreshEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+   // this.getBukkitEntity().addPassenger(armorStand);
   }
 
   @Override
@@ -71,6 +83,16 @@ public class Shark extends Dolphin{
   @Override
   public void tick() {
     super.tick();
+
+    if (armorStand != null && !armorStand.isDead()) {
+      Location sharkLocation = this.getBukkitEntity().getLocation();
+      armorStand.teleport(sharkLocation);
+    }
+
+    if (armorStand != null && !armorStand.isDead()) {
+      Location sharkLoc = this.getBukkitEntity().getLocation();
+      armorStand.setRotation(sharkLoc.getYaw(), sharkLoc.getPitch());
+    }
 
     if (!this.isInWaterRainOrBubble()) {
       this.setMoisntessLevel(this.getMoistnessLevel() - 1);

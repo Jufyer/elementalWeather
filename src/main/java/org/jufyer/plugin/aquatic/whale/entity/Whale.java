@@ -12,31 +12,51 @@ import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jufyer.plugin.aquatic.Main;
 
 public class Whale extends Dolphin {
 
   public static final NamespacedKey WHALE_KEY = new NamespacedKey(Main.getInstance(), "Whale");
+  public static final NamespacedKey DOLPHIN_WHALE_KEY = new NamespacedKey(Main.getInstance(), "DOLPHIN_WHALE");
 
+  private ArmorStand armorStand;
 
   public Whale(Location loc) {
     super(EntityType.DOLPHIN, ((CraftWorld) loc.getWorld()).getHandle());
 
+    /*this.armorStand = loc.getWorld().spawn(loc, ArmorStand.class, as -> {
+      as.getPersistentDataContainer().set(WHALE_KEY, PersistentDataType.BOOLEAN, true);
+      as.setInvulnerable(true);
+      as.setPersistent(true);
+      as.setVisible(false);
+
+      ItemStack whaleItem = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta whaleItemMeta = whaleItem.getItemMeta();
+      whaleItemMeta.setCustomModelData(Main.CMDWhale);
+      whaleItem.setItemMeta(whaleItemMeta);
+      as.setHelmet(whaleItem);
+    });*/
+
     this.setPosRaw(loc.getX(), loc.getY(), loc.getZ());
-    this.getBukkitEntity().getPersistentDataContainer().set(WHALE_KEY, PersistentDataType.BOOLEAN, true);
+    this.getBukkitEntity().getPersistentDataContainer().set(DOLPHIN_WHALE_KEY, PersistentDataType.BOOLEAN, true);
     this.setInvulnerable(false);
     this.setCustomName(Component.nullToEmpty("with"));
     this.setCustomNameVisible(false);
+    this.setInvisible(true);
 
     this.persist = true;
 
-
     ((CraftWorld) loc.getWorld()).getHandle().addFreshEntity(this, SpawnReason.CUSTOM);
 
+    //this.getBukkitEntity().addPassenger(armorStand);
   }
 
   @Override
@@ -81,6 +101,16 @@ public class Whale extends Dolphin {
   @Override
   public void tick() {
     super.tick();
+
+//    if (armorStand != null && !armorStand.isDead()) {
+//      Location sharkLocation = this.getBukkitEntity().getLocation();
+//      armorStand.teleport(sharkLocation);
+//    }
+
+    if (armorStand != null && !armorStand.isDead()) {
+      Location sharkLoc = this.getBukkitEntity().getLocation();
+      armorStand.setRotation(sharkLoc.getYaw(), sharkLoc.getPitch());
+    }
 
     if (!this.isInWaterRainOrBubble()) {
       this.setMoisntessLevel(this.getMoistnessLevel() - 1);
