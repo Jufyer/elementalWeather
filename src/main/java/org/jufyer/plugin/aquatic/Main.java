@@ -41,7 +41,6 @@ import org.jufyer.plugin.aquatic.oceanGlider.entity.listeners.OceanGliderListene
 import org.jufyer.plugin.aquatic.shark.entity.Shark;
 import org.jufyer.plugin.aquatic.shark.listeners.SharkListeners;
 import org.jufyer.plugin.aquatic.spikyPiston.listeners.SpikyPistonListeners;
-import org.jufyer.plugin.aquatic.whale.entity.Whale;
 import org.jufyer.plugin.aquatic.whale.listeners.*;
 
 import java.io.File;
@@ -60,7 +59,6 @@ public final class Main extends JavaPlugin implements Listener {
   private static Main instance;
   public static BrewingControler bc;
 
-  public static final int CMDWhale = 238;
   public static final int CMDBarnacle = 21;
   public static final int CMDBarnacleSpike = 219;
   public static final int CMDBarnacleSpikeExtended = 2195;
@@ -113,32 +111,94 @@ public final class Main extends JavaPlugin implements Listener {
 
     if (getCustomConfig().getBoolean("Banners on boats")){
       getLogger().info("Banners on boats");
+
+      Bukkit.getPluginManager().registerEvents(new BannerOnBoatsListeners(), this);
     }
     if (getCustomConfig().getBoolean("Goldfishes")){
       getLogger().info("Goldfishes");
+
+      Bukkit.getPluginManager().registerEvents(new GoldfishListeners(), this);
     }
     if (getCustomConfig().getBoolean("Nibblers")){
       getLogger().info("Nibblers");
+
+      Bukkit.getPluginManager().registerEvents(new GeneratePrismarineOceanRuin(), this);
+      Bukkit.getPluginManager().registerEvents(new NibblerListeners(), this);
     }
     if (getCustomConfig().getBoolean("Ocean Glider")){
       getLogger().info("Ocean Glider");
+
+      Bukkit.getPluginManager().registerEvents(new OceanGliderListeners(), this);
+
+      ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta OceanGlidermeta = oceanGlider.getItemMeta();
+      OceanGlidermeta.setCustomModelData(Main.CMDOceanGlider);
+      OceanGlidermeta.setDisplayName("§rOcean Glider");
+      oceanGlider.setItemMeta(OceanGlidermeta);
+
+      ShapedRecipe OceanGlider = new ShapedRecipe(oceanGlider);
+      OceanGlider.shape("N N", "PPP", "NHN");
+
+      OceanGlider.setIngredient('N', Material.NAUTILUS_SHELL);
+      OceanGlider.setIngredient('P', Material.PRISMARINE_SHARD);
+      OceanGlider.setIngredient('H', Material.HEART_OF_THE_SEA);
+
+      getServer().addRecipe(OceanGlider);
     }
     if (getCustomConfig().getBoolean("Oysters")){
       getLogger().info("Oysters");
+
+      Bukkit.getPluginManager().registerEvents(new OysterListeners(), this);
+      Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
+      Bukkit.getPluginManager().registerEvents(new FurnaceListeners(), this);
+
+      ItemStack raw_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta rawOysterItemMetameta = raw_oyster.getItemMeta();
+      rawOysterItemMetameta.setCustomModelData(CMDRawOyster);
+      rawOysterItemMetameta.setDisplayName("§rRaw Oyster");
+      rawOysterItemMetameta.getPersistentDataContainer().set(RAW_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
+      raw_oyster.setItemMeta(rawOysterItemMetameta);
+
+      ItemStack cooked_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta cookedOysterItemMeta = cooked_oyster.getItemMeta();
+      cookedOysterItemMeta.setCustomModelData(CMDCookedOyster);
+      cookedOysterItemMeta.setDisplayName("§rCooked Oyster");
+      cookedOysterItemMeta.getPersistentDataContainer().set(COOKED_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
+      cooked_oyster.setItemMeta(cookedOysterItemMeta);
+
+      getServer().addRecipe(new FurnaceRecipe(cooked_oyster, raw_oyster.getType()));
+
+      addBrewingRecipe();
     }
     if (getCustomConfig().getBoolean("Sharks")){
       getLogger().info("Sharks");
+
+      Bukkit.getPluginManager().registerEvents(new SharkListeners(), this);
+      Bukkit.getPluginManager().registerEvents(new SpikyPistonListeners(), this);
+
+      ItemStack sharkTooth = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta SharkToothMeta = sharkTooth.getItemMeta();
+      SharkToothMeta.setDisplayName("§rShark Tooth");
+      SharkToothMeta.setCustomModelData(Main.CMDSharkTooth);
+      sharkTooth.setItemMeta(SharkToothMeta);
+
+      ItemStack spikyPiston = new ItemStack(Material.NAUTILUS_SHELL);
+      ItemMeta SpikyPistonMeta = spikyPiston.getItemMeta();
+      SpikyPistonMeta.setDisplayName("§rSpiky Piston");
+      SpikyPistonMeta.setCustomModelData(CMDSpikyPistonItem);
+      spikyPiston.setItemMeta(SpikyPistonMeta);
+
+      ShapedRecipe SpikyPiston = new ShapedRecipe(spikyPiston);
+      SpikyPiston.shape("TTT", "TPT", "   ");
+
+      SpikyPiston.setIngredient('T', new RecipeChoice.ExactChoice(sharkTooth)); // Custom Item
+      SpikyPiston.setIngredient('P', Material.PISTON);
+
+      getServer().addRecipe(SpikyPiston);
     }
     if (getCustomConfig().getBoolean("Whales")){
       getLogger().info("Whales");
-    }
-    if (getCustomConfig().getBoolean("Debug")){
-      getLogger().info("Debug mode on!");
-      getCommand("spawnShark").setExecutor(new spawnShark());
-    }
 
-
-    if (getCustomConfig().getBoolean("Whales")){
       Bukkit.getPluginManager().registerEvents(new WhaleListeners(), this);
       Bukkit.getPluginManager().registerEvents(new spawnListener(), this);
       Bukkit.getPluginManager().registerEvents(new rightClickListener(), this);
@@ -168,86 +228,9 @@ public final class Main extends JavaPlugin implements Listener {
 
       getServer().addRecipe(barnacles_spike);
     }
-
-    if (getCustomConfig().getBoolean("Ocean Glider")){
-      Bukkit.getPluginManager().registerEvents(new OceanGliderListeners(), this);
-
-      ItemStack oceanGlider = new ItemStack(Material.NAUTILUS_SHELL);
-      ItemMeta OceanGlidermeta = oceanGlider.getItemMeta();
-      OceanGlidermeta.setCustomModelData(Main.CMDOceanGlider);
-      OceanGlidermeta.setDisplayName("§rOcean Glider");
-      oceanGlider.setItemMeta(OceanGlidermeta);
-
-      ShapedRecipe OceanGlider = new ShapedRecipe(oceanGlider);
-      OceanGlider.shape("N N", "PPP", "NHN");
-
-      OceanGlider.setIngredient('N', Material.NAUTILUS_SHELL);
-      OceanGlider.setIngredient('P', Material.PRISMARINE_SHARD);
-      OceanGlider.setIngredient('H', Material.HEART_OF_THE_SEA);
-
-      getServer().addRecipe(OceanGlider);
-    }
-
-    if (getCustomConfig().getBoolean("Nibblers")){
-      Bukkit.getPluginManager().registerEvents(new GeneratePrismarineOceanRuin(), this);
-      Bukkit.getPluginManager().registerEvents(new NibblerListeners(), this);
-    }
-
-    if (getCustomConfig().getBoolean("Oysters")){
-      Bukkit.getPluginManager().registerEvents(new OysterListeners(), this);
-      Bukkit.getPluginManager().registerEvents(new PotionOfLuckListeners(), this);
-      Bukkit.getPluginManager().registerEvents(new FurnaceListeners(), this);
-
-      ItemStack raw_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
-      ItemMeta rawOysterItemMetameta = raw_oyster.getItemMeta();
-      rawOysterItemMetameta.setCustomModelData(CMDRawOyster);
-      rawOysterItemMetameta.setDisplayName("§rRaw Oyster");
-      rawOysterItemMetameta.getPersistentDataContainer().set(RAW_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
-      raw_oyster.setItemMeta(rawOysterItemMetameta);
-
-      ItemStack cooked_oyster = new org.bukkit.inventory.ItemStack(Material.NAUTILUS_SHELL);
-      ItemMeta cookedOysterItemMeta = cooked_oyster.getItemMeta();
-      cookedOysterItemMeta.setCustomModelData(CMDCookedOyster);
-      cookedOysterItemMeta.setDisplayName("§rCooked Oyster");
-      cookedOysterItemMeta.getPersistentDataContainer().set(COOKED_OYSTER_KEY, PersistentDataType.BYTE, (byte) 1);
-      cooked_oyster.setItemMeta(cookedOysterItemMeta);
-
-      getServer().addRecipe(new FurnaceRecipe(cooked_oyster, raw_oyster.getType()));
-
-      addBrewingRecipe();
-    }
-
-    if (getCustomConfig().getBoolean("Sharks")){
-      Bukkit.getPluginManager().registerEvents(new SharkListeners(), this);
-      Bukkit.getPluginManager().registerEvents(new SpikyPistonListeners(), this);
-
-      ItemStack sharkTooth = new ItemStack(Material.NAUTILUS_SHELL);
-      ItemMeta SharkToothMeta = sharkTooth.getItemMeta();
-      SharkToothMeta.setDisplayName("§rShark Tooth");
-      SharkToothMeta.setCustomModelData(Main.CMDSharkTooth);
-      sharkTooth.setItemMeta(SharkToothMeta);
-
-      ItemStack spikyPiston = new ItemStack(Material.NAUTILUS_SHELL);
-      ItemMeta SpikyPistonMeta = spikyPiston.getItemMeta();
-      SpikyPistonMeta.setDisplayName("§rSpiky Piston");
-      SpikyPistonMeta.setCustomModelData(CMDSpikyPistonItem);
-      spikyPiston.setItemMeta(SpikyPistonMeta);
-
-      ShapedRecipe SpikyPiston = new ShapedRecipe(spikyPiston);
-      SpikyPiston.shape("TTT", "TPT", "   ");
-
-      SpikyPiston.setIngredient('T', new RecipeChoice.ExactChoice(sharkTooth)); // Custom Item
-      SpikyPiston.setIngredient('P', Material.PISTON);
-
-      getServer().addRecipe(SpikyPiston);
-    }
-
-    if (getCustomConfig().getBoolean("Banners on boats")){
-      Bukkit.getPluginManager().registerEvents(new BannerOnBoatsListeners(), this);
-    }
-
-    if (getCustomConfig().getBoolean("Goldfishes")){
-      Bukkit.getPluginManager().registerEvents(new GoldfishListeners(), this);
+    if (getCustomConfig().getBoolean("Debug")){
+      getLogger().info("Debug mode on!");
+      getCommand("spawnShark").setExecutor(new spawnShark());
     }
   }
 
