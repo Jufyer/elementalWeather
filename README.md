@@ -108,6 +108,17 @@ The Goldfish is a new mob without any functionality. It is just there for the lo
 
 <p align="center"><img src="https://imgur.com/bmBvdJc.png"></p>
 
+## Debug Mode
+
+The Debug Mode includes the following Commands:
+
+1. spawnShark
+2. spawnNibbler
+3. spawnGoldfish
+4. spawnWhale
+
+You need to activate it in the config file. Only OP's can use these Commands!
+
 ## Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss your ideas.  
