@@ -81,16 +81,16 @@ The Oyster is a new Block. But this block cant be broken so you cant get the Blo
   - <p align="center"><img src="https://imgur.com/mXMZKrQ.png"></p>
   
 If you shear an oyster it always drops a raw oyster. And if the oyster has a pearl it also drops it. It will look something like this:
-<p align="center"><img src="https://imgur.com/OqYtza8.png"></p>
+<p align="center"><img src="https://imgur.com/pdRJdfE.png"></p>
 
 If you eat the Oyster raw you will get nausea but if you cook it you will get a good food source. You can cook it in the furnace like any other food like this:
-<p align="center"><img src="https://imgur.com/hfGTeuA.png"></p>
+<p align="center"><img src="https://imgur.com/9aNDFPF.png"></p>
 
 And if you get the Pearl you can brew a potion of Luck with it. You can to it like that: 
 
-<p align="center"><img src="https://imgur.com/J8uSfb3.png"></p>
+<p align="center"><img src="https://imgur.com/CQhJfkG.png"></p>
 
-<p align="center"><img src="https://imgur.com/oBtmt64.png"></p>
+<p align="center"><img src="https://imgur.com/NyFEja6.png"></p>
 
 <p align="center"><img src="https://imgur.com/w28EmwU.png"></p>
   
