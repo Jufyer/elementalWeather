@@ -5,7 +5,7 @@ This Minecraft Plugin adds many features related to the Ocean to Minecraft. The 
 ## Installation
 
 1. Install the plugin like any other Minecraft plugin.
-2. After installation, you need to either use the provided resource pack yourself or set it as mandatory for the whole server. You can find the resource pack by going to the [`releases`](https://github.com/Jufyer/aquaticPlugin/releases) or on [`MediaFire`](https://www.mediafire.com/file/q78m8wc709t4kia/Aquatic_Resourcepack.zip/file).
+2. After installation, you need to either use the provided resource pack yourself or set it as mandatory for the whole server. You can find the resource pack by going to the [`releases`](https://github.com/Jufyer/aquaticPlugin/releases) or on [`MediaFire`](https://www.mediafire.com/file/b5hbhxbay5jlw54/Aquatic+Resourcepack.rar/file).
 3. To set it as mandatory, follow [`this tutorial`](https://www.youtube.com/watch?v=qCVPgn3IppU) by [`@KasaiSora`](https://www.youtube.com/@KasaiSora) on YouTube.
 4. You also need OptiFine. If you don't want to use OptiFine you can use these two mods: [`[ETF] Entity Texture Features`](https://modrinth.com/mod/entitytexturefeatures) and this one: [`[EMF] Entity Model Features`](https://modrinth.com/mod/entity-model-features).
 
