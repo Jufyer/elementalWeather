@@ -9,7 +9,7 @@ plugins {
 
 group = "org.jufyer.plugin"
 version = "1.0.0-SNAPSHOT"
-description = "Biome Bosses Minecraft Plugin by Jufyer"
+description = "Elemental Weather Minecraft Plugin by Jufyer"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -40,7 +40,7 @@ tasks {
 // Configure plugin.yml generation
 // - name, version, and description are inherited from the Gradle project.
 bukkitPluginYaml {
-  main = "org.jufyer.plugin.biomeBosses.Main"
+  main = "org.jufyer.plugin.elementalWeather.Main"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   authors.add("Jufyer")
   apiVersion = "1.21.4"
