@@ -1,0 +1,24 @@
+{
+  "weather_set_sun": "&eThe weather has cleared!",
+  "weather_set_rain": "&bRain begins to fall...",
+  "weather_set_thunder": "&cThunder shakes the skies!",
+
+  "sun_warmth": "&eYou feel the sun's warmth...",
+  "rain_cooldown": "&bThe rain cools your movements...",
+  "storm_energy": "&cLightning surges through your body!",
+
+  "scoreboard_title": "§6Current Weather",
+  "scoreboard_effect_label": "§aEffect:",
+
+  "scoreboard_effect_rain": "§fRain",
+  "scoreboard_desc_rain1": "§3Slowness",
+  "scoreboard_desc_rain2": "§3Plants grow slower",
+
+  "scoreboard_effect_storm": "§fStorm",
+  "scoreboard_desc_storm1": "§4Speed II",
+  "scoreboard_desc_storm2": "§4Strength",
+
+  "scoreboard_effect_sun": "§fSun",
+  "scoreboard_desc_sun1": "§eRegeneration",
+  "scoreboard_desc_sun2": "§ePlants grow faster"
+}
