@@ -28,10 +28,6 @@ Pull requests are welcome!
 For major changes, please open an issue to discuss your ideas first.  
 Make sure to update any relevant tests when you make changes.
 
-## 🐞 Known Issues
-
-- It is currently not possible to place blocks on top of certain new blocks. *(WIP fix)*
-
 ## 📄 License
 
 This project is licensed under the [GNU General Public License v3](https://github.com/Jufyer/elementalWeather/blob/master/LICENSE).
